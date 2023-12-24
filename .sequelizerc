@@ -1,0 +1,8 @@
+const path = require('path');
+
+module.exports = {
+  'config': path.resolve('config', 'config.json'), // Sesuaikan dengan lokasi konfigurasi database Anda
+  'models-path': path.resolve('src', 'models'), // Ubah path sesuai dengan lokasi model yang baru
+  'migrations-path': path.resolve('src', 'database', 'migrations'), // Ubah path sesuai dengan lokasi migrasi yang baru
+  'seeders-path': path.resolve('src', 'database', 'seeders') // Ubah path sesuai dengan lokasi seeders yang baru
+};
