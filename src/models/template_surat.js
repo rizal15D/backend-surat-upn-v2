@@ -1,19 +1,20 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Departemen extends Model {
+  class template_surat extends Model {
     static associate(models) {
       // define association here
     }
   }
-  Departemen.init(
+  Template_surat.init(
     {
-      name: DataTypes.STRING,
+      judul: DataTypes.STRING,
+      lokasi: DataTypes.STRING,
     },
     {
       sequelize,
-      modelName: "Departemen",
+      modelName: "Template_surat",
     }
   );
-  return Departemen;
+  return Template_surat;
 };
