@@ -1,7 +1,8 @@
-const router = require('express').Router()
+const router = require("express");
+const daftarSuratController = require("../Http/controllers/daftar_surat_controller");
 
-router.get('/', (req, res) => {
-    res.json({message:'Hello World adwd!'})
-})
+const app = router();
 
-module.exports = router
+app.use("/daftarsurat", daftarSuratController);
+
+module.exports = app;
