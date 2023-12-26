@@ -3,7 +3,11 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Daftar_surat extends Model {
     static associate(models) {
+      Daftar_surat.belongsTo(models.Template_surats, { foreignKey: "template_surat_id" });
       Daftar_surat.belongsTo(models.Users, { foreignKey: "user_id" });
+      Daftar_surat.belongsTo(models.Status, { foreignKey: "status_id" });
+      Daftar_surat.belongsTo(models.Persetujuans, { foreignKey: "persetujuan_id" });
+      Daftar_surat.hasMany(models.Komentars, { foreignKey: "surat_id" });
     }
   }
   Daftar_surat.init(
@@ -52,16 +56,16 @@ module.exports = (sequelize, DataTypes) => {
         onUpdate: "CASCADE",
         onDelete: "SET NULL",
       },
-      komentar_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        references: {
-          model: "Komentars",
-          key: "id",
-        },
-        onUpdate: "CASCADE",
-        onDelete: "SET NULL",
-      },
+      // komentar_id: {
+      //   type: DataTypes.INTEGER,
+      //   allowNull: false,
+      //   references: {
+      //     model: "Komentars",
+      //     key: "id",
+      //   },
+      //   onUpdate: "CASCADE",
+      //   onDelete: "SET NULL",
+      // },
     },
     {
       sequelize,
