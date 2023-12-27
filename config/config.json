@@ -4,20 +4,23 @@
     "password": "12345",
     "database": "backend-upn",
     "host": "localhost",
-    "dialect": "postgres"
+    "dialect": "postgres",
+    "secret_key": "805326060306bd0c1e68e933fb29cbd2f2f16761747da76a869390c7a7dabc8aee54407866160926942cf2ae12a8684f1c2f49b31d844a533e603c0d2579afd5"
   },
   "test": {
     "username": "postgres",
     "password": "12345",
     "database": "backend-upn",
     "host": "localhost",
-    "dialect": "postgres"
+    "dialect": "postgres",
+    "secret_key": "805326060306bd0c1e68e933fb29cbd2f2f16761747da76a869390c7a7dabc8aee54407866160926942cf2ae12a8684f1c2f49b31d844a533e603c0d2579afd5"
   },
   "production": {
     "username": "postgres",
     "password": "12345",
     "database": "backend-upn",
     "host": "localhost",
-    "dialect": "postgres"
+    "dialect": "postgres",
+    "secret_key": "805326060306bd0c1e68e933fb29cbd2f2f16761747da76a869390c7a7dabc8aee54407866160926942cf2ae12a8684f1c2f49b31d844a533e603c0d2579afd5"
   }
 }

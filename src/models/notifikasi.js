@@ -4,10 +4,10 @@ module.exports = (sequelize, DataTypes) => {
   class Notifikasi extends Model {
     static associate(models) {
       Notifikasi.belongsTo(models.Daftar_surat, { foreignKey: "surat_id" });
-      Notifikasi.belongsTo(models.Departemens, {
+      Notifikasi.belongsTo(models.Departemen, {
         foreignKey: "departemen_id_dari",
       });
-      Notifikasi.belongsTo(models.Departemens, {
+      Notifikasi.belongsTo(models.Departemen, {
         foreignKey: "departemen_id_ke",
       });
     }
@@ -18,7 +18,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-          model: "Daftar_surats",
+          model: "Daftar_surat",
           key: "id",
         },
         onUpdate: "CASCADE",
@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-          model: "Departemens",
+          model: "Departemen",
           key: "id",
         },
         onUpdate: "CASCADE",
@@ -38,7 +38,7 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-          model: "Departemens",
+          model: "Departemen",
           key: "id",
         },
         onUpdate: "CASCADE",
