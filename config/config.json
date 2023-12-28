@@ -5,7 +5,7 @@
     "database": "backend-upn",
     "host": "localhost",
     "dialect": "postgres",
-    "secret_key": "805326060306bd0c1e68e933fb29cbd2f2f16761747da76a869390c7a7dabc8aee54407866160926942cf2ae12a8684f1c2f49b31d844a533e603c0d2579afd5"
+    "secret_key": "b8f18d24be2ee3e4087f2b04567a47b28bdf6e470cfa1a62acd930e987b8c2450acfda4d7a53dfbf8fbc81d5a678e87fef28ad9076176b0262c631e4b72d493f"
   },
   "test": {
     "username": "postgres",
@@ -13,7 +13,7 @@
     "database": "backend-upn",
     "host": "localhost",
     "dialect": "postgres",
-    "secret_key": "805326060306bd0c1e68e933fb29cbd2f2f16761747da76a869390c7a7dabc8aee54407866160926942cf2ae12a8684f1c2f49b31d844a533e603c0d2579afd5"
+    "secret_key": "b8f18d24be2ee3e4087f2b04567a47b28bdf6e470cfa1a62acd930e987b8c2450acfda4d7a53dfbf8fbc81d5a678e87fef28ad9076176b0262c631e4b72d493f"
   },
   "production": {
     "username": "postgres",
@@ -21,6 +21,6 @@
     "database": "backend-upn",
     "host": "localhost",
     "dialect": "postgres",
-    "secret_key": "805326060306bd0c1e68e933fb29cbd2f2f16761747da76a869390c7a7dabc8aee54407866160926942cf2ae12a8684f1c2f49b31d844a533e603c0d2579afd5"
+    "secret_key": "b8f18d24be2ee3e4087f2b04567a47b28bdf6e470cfa1a62acd930e987b8c2450acfda4d7a53dfbf8fbc81d5a678e87fef28ad9076176b0262c631e4b72d493f"
   }
 }

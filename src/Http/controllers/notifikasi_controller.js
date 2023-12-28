@@ -1,32 +1,33 @@
 const express = require("express");
-const sequelize = require("../../models/index");
-const Notifikasi = require("../../models/notifikasi");
-// const notifikasiModel = Notifikasi;
-
+const { sequelize, Sequelize } = require("../../models/index");
+const Notifikasi = require("../../models/notifikasi")(
+  sequelize,
+  Sequelize.DataTypes
+);
 const app = express.Router();
 
 app.use(express.json()); // for parsing application/json
 app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 
 app
-  .post("/", function (req, res) {
-    return sequelize
-      .async({ alter: true })
-      .then(() => {
-        return Notifikasi.create({
-          surat_id: req.body.surat_id,
-          departemen_id_dari: req.body.departemen_id_dari,
-          departemen_id_ke: req.body.departemen_id_ke,
-        });
-        console.log("success post notif");
-        res.status(201).json(notifikasi);
-      })
-      .catch((error) => {
-        console.error(error);
-        res.status(500).json({
-          message: "An error occurred while creating the notification.",
-        });
+  .post("/", async function (req, res) {
+    try {
+      await sequelize.sync({ alter: true });
+
+      const notifikasi = await Notifikasi.create({
+        surat_id: req.body.surat_id, // Gunakan req.body, bukan req.surat_id
+        departemen_id_dari: req.body.departemen_id_dari, // tetep error cuy
+        departemen_id_ke: req.body.departemen_id_ke,
       });
+
+      // Berikan respon setelah notifikasi berhasil dibuat
+      res.status(201).json({ message: "Success post notif", notifikasi });
+    } catch (error) {
+      console.error("Error:", error);
+      res
+        .status(500)
+        .json({ message: "Internal Server Error", error: error.message });
+    }
   })
 
   .put("/:id", (req, res) => {

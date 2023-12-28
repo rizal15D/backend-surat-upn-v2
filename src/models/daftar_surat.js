@@ -3,11 +3,16 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Daftar_surat extends Model {
     static associate(models) {
-      Daftar_surat.belongsTo(models.Template_surat, { foreignKey: "template_surat_id" });
+      Daftar_surat.belongsTo(models.Template_surat, {
+        foreignKey: "template_surat_id",
+      });
       Daftar_surat.belongsTo(models.Users, { foreignKey: "user_id" });
       Daftar_surat.belongsTo(models.Status, { foreignKey: "status_id" });
-      Daftar_surat.belongsTo(models.Persetujuan, { foreignKey: "persetujuan_id" });
+      Daftar_surat.belongsTo(models.Persetujuan, {
+        foreignKey: "persetujuan_id",
+      });
       Daftar_surat.hasMany(models.Komentar, { foreignKey: "surat_id" });
+      Daftar_surat.hasMany(models.Notifikasi, { foreignKey: "surat_id" });
     }
   }
   Daftar_surat.init(
@@ -58,7 +63,7 @@ module.exports = (sequelize, DataTypes) => {
       },
       // komentar_id: {
       //   type: DataTypes.INTEGER,
-      //   allowNull: false,
+      //   allowNull: true,
       //   references: {
       //     model: "Komentars",
       //     key: "id",
