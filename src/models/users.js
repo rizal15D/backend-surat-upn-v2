@@ -3,7 +3,7 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Users extends Model {
     static associate(models) {
-      Users.belongsTo(models.Departemens, { foreignKey: "department_id" });
+      Users.belongsTo(models.Departemen, { foreignKey: "departmen_id" });
     }
   }
   Users.init(
@@ -18,12 +18,13 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-          model: "Departemens",
+          model: "Departemen",
           key: "id",
         },
         onUpdate: "CASCADE",
         onDelete: "SET NULL",
       },
+      remember_token: DataTypes.TEXT,
     },
     {
       sequelize,
