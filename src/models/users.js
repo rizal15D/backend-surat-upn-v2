@@ -3,7 +3,7 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Users extends Model {
     static associate(models) {
-      Users.belongsTo(models.Departemen, { foreignKey: "departmen_id" });
+      Users.belongsTo(models.Departemen, { foreignKey: "departemen_id" });
     }
   }
   Users.init(
@@ -14,7 +14,7 @@ module.exports = (sequelize, DataTypes) => {
         unique: true,
       },
       password: DataTypes.STRING,
-      department_id: {
+      departemen_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {

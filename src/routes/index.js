@@ -5,6 +5,7 @@ const templateController = require("../Http/controllers/template_surat_controlle
 const authMiddleware = require("../Http/middleware/authMiddleware");
 const loginController = require("../Http/controllers/loginController");
 const registerController = require("../Http/controllers/registerController");
+const Users = require("../Http/controllers/user");
 
 const router = express.Router();
 
@@ -12,6 +13,7 @@ router.use("/daftarsurat", daftarSuratController);
 router.use("/notifikasi", notifikasiController);
 router.use("/template", templateController);
 router.use("/daftarsurat", authMiddleware, daftarSuratController);
+router.use("/user", Users);
 router.use("/login", loginController);
 router.use("/register", registerController);
 

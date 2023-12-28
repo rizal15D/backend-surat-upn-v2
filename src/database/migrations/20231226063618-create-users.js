@@ -29,7 +29,7 @@ module.exports = {
         onUpdate: "CASCADE",
         onDelete: "SET NULL",
       },
-      refresh_token: {
+      remember_token: {
         type: Sequelize.TEXT,
       },
       createdAt: {

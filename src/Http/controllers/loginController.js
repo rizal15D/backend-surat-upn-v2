@@ -4,14 +4,25 @@ const jwt = require("jsonwebtoken");
 const { Users } = require("../../models");
 const config = require('../../../config/config.json');
 
+const environment = 'development'; // or 'test', or 'production'
+const secretKey = config[environment].secret_key;
+
 const app = express.Router();
 
-app.post("/login", async (req, res) => {
+app.post("/", async (req, res) => {
   try {
     const user = await Users.findOne({ where: { email: req.body.email } });
     if (user && await bcrypt.compare(req.body.password, user.password)) {
-      const token = jwt.sign({ id: user.id }, config.secret_key, { expiresIn: "1h" });
-      res.json({ token });
+      const token = jwt.sign({ id: user.id }, secretKey, { expiresIn: "1h" });
+      res.json({ 
+        message: "Login Berhasil", 
+        token, 
+        user: {
+          id: user.id,
+          email: user.email,
+          password: user.password,
+        }
+      });
     } else {
       res.status(401).json({ error: "Invalid login credentials" });
     }
