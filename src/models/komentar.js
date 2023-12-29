@@ -4,7 +4,7 @@ module.exports = (sequelize, DataTypes) => {
   class Komentar extends Model {
     static associate(models) {
       Komentar.belongsTo(models.Daftar_surat, { foreignKey: "surat_id" });
-      Komentar.belongsTo(models.Departemen, { foreignKey: "departemen_id" });
+      Komentar.belongsTo(models.Role_user, { foreignKey: "role_id" });
     }
   }
   Komentar.init(
@@ -19,11 +19,11 @@ module.exports = (sequelize, DataTypes) => {
         onUpdate: "CASCADE",
         onDelete: "SET NULL",
       },
-      departemen_id: {
+      role_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-          model: "Departemen",
+          model: "Role_user",
           key: "id",
         },
         onUpdate: "CASCADE",
