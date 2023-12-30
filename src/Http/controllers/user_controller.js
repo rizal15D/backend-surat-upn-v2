@@ -1,10 +1,10 @@
 const express = require("express");
 const { Users } = require("../../models");
 const isAdmin = require('../middleware/adminMiddleware');
-// const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 const app = express.Router();
-// Get all users
+
 app.get("/", isAdmin, async (req, res) => {
   try {
     const users = await Users.findAll();
@@ -15,7 +15,6 @@ app.get("/", isAdmin, async (req, res) => {
   }
 });
 
-// Get a single user by ID
 app.get("/:id", async (req, res) => {
   try {
     const user = await Users.findByPk(req.params.id);
@@ -29,10 +28,14 @@ app.get("/:id", async (req, res) => {
   }
 });
 
-// Update a user by ID
 app.put("/:id", isAdmin, async (req, res) => {
   try {
-    const [updated] = await Users.update(req.body, {
+    const { name, email, password, role_id } = req.body;
+    let hashedPassword;
+    if (password) {
+      hashedPassword = await bcrypt.hash(password, 10);
+    }
+    const [updated] = await Users.update({ name, email, password: hashedPassword, role_id }, {
       where: { id: req.params.id },
     });
     if (updated) {
@@ -46,7 +49,6 @@ app.put("/:id", isAdmin, async (req, res) => {
   }
 });
 
-// Delete a user by ID
 app.delete("/:id", isAdmin, async (req, res) => {
   try {
     const deleted = await Users.destroy({
