@@ -14,7 +14,6 @@ const router = express.Router();
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
-// router.use("/daftarsurat", daftarSuratController);
 // router.use("/notifikasi", notifikasiController);
 // router.use("/template", templateController);
 // router.use("/daftarsurat", daftarSuratController);
@@ -26,6 +25,7 @@ router.post("/auth/login", authController.login);
 router.post("/auth/register", authController.register);
 router.use("/role-user", authMiddleware, role_user_controller);
 router.use("/user", authMiddleware, userController);
+router.use("/daftarsurat", authMiddleware, daftarSuratController);
 
 // router.use("api/v1", (authMiddleware) => {
 //   router.post("/auth/register", authController.register);

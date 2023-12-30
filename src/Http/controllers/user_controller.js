@@ -1,14 +1,16 @@
 const express = require("express");
 const { Users } = require("../../models");
+const isAdmin = require('../middleware/adminMiddleware');
 // const jwt = require("jsonwebtoken");
 
 const app = express.Router();
 // Get all users
-app.get("/", async (req, res) => {
+app.get("/", isAdmin, async (req, res) => {
   try {
     const users = await Users.findAll();
     res.json(users);
   } catch (error) {
+    console.error("Error getting users:", error);
     res.status(500).json({ error: error.message });
   }
 });
@@ -28,7 +30,7 @@ app.get("/:id", async (req, res) => {
 });
 
 // Update a user by ID
-app.put("/:id", async (req, res) => {
+app.put("/:id", isAdmin, async (req, res) => {
   try {
     const [updated] = await Users.update(req.body, {
       where: { id: req.params.id },
@@ -45,7 +47,7 @@ app.put("/:id", async (req, res) => {
 });
 
 // Delete a user by ID
-app.delete("/:id", async (req, res) => {
+app.delete("/:id", isAdmin, async (req, res) => {
   try {
     const deleted = await Users.destroy({
       where: { id: req.params.id },

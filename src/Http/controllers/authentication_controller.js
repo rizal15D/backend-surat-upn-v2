@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
 const { StatusCodes } = require("http-status-codes");
-const { Users } = require("../../models");
+const { Users, Role_user } = require("../../models");
 const config = require("../../../config/config.json");
 const jwt = require("jsonwebtoken");
 
@@ -9,14 +9,20 @@ const secretKey = config[environment].secret_key;
 
 const register = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, role_id } = req.body;
     const hashedPassword = await bcrypt.hash(password, 10);
-    const admin = 6;
+    const role_user = await Role_user.findOne({
+      where: { id: role_id },
+    });
+
+    if (!role_user) {
+      return res.status(400).json({ error: "No such role_user exists" });
+    }
     const user = await Users.create({
       name,
       email,
       password: hashedPassword,
-      role_id: admin,
+      role_id: role_user.id,
     });
     const token = jwt.sign({ id: user.id }, secretKey, { expiresIn: "1h" });
     res
@@ -42,6 +48,7 @@ const login = async (req, res) => {
           id: user.id,
           email: user.email,
           password: user.password,
+          role_id: user.role_id,
         },
       });
     } else {
