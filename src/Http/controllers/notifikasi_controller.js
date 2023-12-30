@@ -1,42 +1,62 @@
 const express = require("express");
-const { sequelize, Sequelize } = require("../../models/index");
-const Notifikasi = require("../../models/notifikasi")(
-  sequelize,
-  Sequelize.DataTypes
-);
+const { Notifikasi } = require("../../models");
+const { StatusCodes } = require("http-status-codes");
 const app = express.Router();
 
-app.use(express.json()); // for parsing application/json
-app.use(express.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
+app.post("/", async function (req, res) {
+  const { surat_id, role_id_dari, role_id_ke } = req.body;
 
-app
-  .post("/", async function (req, res) {
-    try {
-      await sequelize.sync({ alter: true });
+  try {
+    const notifikasi = await Notifikasi.create({
+      surat_id: surat_id,
+      role_id_dari: role_id_dari, // gak/ iki aku nyoba posman kok eror
+      role_id_ke: role_id_ke, //ga enek tutor gae notif cuy
+    });
 
-      const notifikasi = await Notifikasi.create({
-        surat_id: req.body.surat_id, // Gunakan req.body, bukan req.surat_id
-        departemen_id_dari: req.body.departemen_id_dari, // tetep error cuy
-        departemen_id_ke: req.body.departemen_id_ke,
-      });
+    res
+      .status(StatusCodes.CREATED)
+      .json({ message: "File successfully uploaded", notifikasi });
+  } catch (error) {
+    console.error("Error:", error);
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error: "Internal Server Error" });
+  }
+});
 
-      // Berikan respon setelah notifikasi berhasil dibuat
-      res.status(201).json({ message: "Success post notif", notifikasi });
-    } catch (error) {
-      console.error("Error:", error);
-      res
-        .status(500)
-        .json({ message: "Internal Server Error", error: error.message });
-    }
-  })
+app.post("/", async function (req, res) {
+  const { surat_id, role_id_dari, role_id_ke } = req.body;
 
-  .put("/:id", (req, res) => {
-    const id = req.params.id;
-    res.send("put hello world2");
-  })
-  .delete("/:id", (req, res) => {
-    const id = req.params.id;
-    res.send("delete hello world2");
-  });
+  try {
+    // Find all users with the 'role_id_ke'
+    const users = await User.findAll({
+      where: {
+        role_id: role_id_ke,
+        id: {
+          [Op.ne]: role_id_dari, // Exclude the sender
+        },
+      },
+    });
 
+    // Create a notification for each user
+    const notifications = await Promise.all(
+      users.map((user) => {
+        return Notifikasi.create({
+          surat_id: surat_id,
+          role_id_dari: role_id_dari,
+          role_id_ke: user.id, // Use the user's ID
+        });
+      })
+    );
+
+    res
+      .status(StatusCodes.CREATED)
+      .json({ message: "Notifications successfully created", notifications });
+  } catch (error) {
+    console.error("Error:", error);
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ error: "Internal Server Error" });
+  }
+});
 module.exports = app;

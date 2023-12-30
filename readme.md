@@ -6,7 +6,7 @@ npm install multer
 change the 'config.json'
 
 npx sequelize-cli db:migrate
-npx sequelize-cli db:seed
+npx sequelize-cli db:seed:all
 
 > npm run api-service
 

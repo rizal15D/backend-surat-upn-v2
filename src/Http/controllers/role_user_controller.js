@@ -29,7 +29,7 @@ app
       const { name } = req.body;
       const { id } = req.query;
       if (!id) {
-        return res.status(400).json({ error: "Invalid query" });
+        return res.status(400).json({ error: "Invalid params" });
       }
 
       const role = await Role_user.findOne({ where: { id: id } });
