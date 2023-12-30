@@ -1,8 +1,8 @@
 const express = require("express");
 const { Users } = require("../../models");
+const jwt = require("jsonwebtoken");
 
 const app = express.Router();
-
 // Get all users
 app.get("/", async (req, res) => {
   try {
@@ -31,7 +31,7 @@ app.get("/:id", async (req, res) => {
 app.put("/:id", async (req, res) => {
   try {
     const [updated] = await Users.update(req.body, {
-      where: { id: req.params.id }
+      where: { id: req.params.id },
     });
     if (updated) {
       const updatedUser = await Users.findByPk(req.params.id);
@@ -48,7 +48,7 @@ app.put("/:id", async (req, res) => {
 app.delete("/:id", async (req, res) => {
   try {
     const deleted = await Users.destroy({
-      where: { id: req.params.id }
+      where: { id: req.params.id },
     });
     if (deleted) {
       res.status(204).send("User deleted");
@@ -60,4 +60,4 @@ app.delete("/:id", async (req, res) => {
   }
 });
 
-module.exports = app;
+module.exports = { app };

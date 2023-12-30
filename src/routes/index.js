@@ -5,16 +5,30 @@ const templateController = require("../Http/controllers/template_surat_controlle
 const authMiddleware = require("../Http/middleware/authMiddleware");
 const loginController = require("../Http/controllers/loginController");
 const registerController = require("../Http/controllers/registerController");
-const Users = require("../Http/controllers/user");
+const userController = require("../Http/controllers/user_controller");
+const authController = require("../Http/controllers/authentication_controller");
+const role_user_controller = require("../Http/controllers/role_user_controller");
 
 const router = express.Router();
 
-router.use("/daftarsurat", daftarSuratController);
-router.use("/notifikasi", notifikasiController);
-router.use("/template", templateController);
-router.use("/daftarsurat", authMiddleware, daftarSuratController);
-router.use("/user", Users);
-router.use("/login", loginController);
-router.use("/register", registerController);
+router.use(express.json());
+router.use(express.urlencoded({ extended: true }));
+
+// router.use("/daftarsurat", daftarSuratController);
+// router.use("/notifikasi", notifikasiController);
+// router.use("/template", templateController);
+// router.use("/daftarsurat", daftarSuratController);
+// router.use("/user", userController);
+// router.use("/login", loginController);
+// router.use("/register", registerController);
+
+router.post("/auth/login", authController.login);
+router.post("/auth/register", authController.register);
+router.use("/role-user", role_user_controller);
+
+// router.use("api/v1", (authMiddleware) => {
+//   router.post("/auth/register", authController.register);
+//   router.use("/auth/login", authController.login);
+// });
 
 module.exports = router;

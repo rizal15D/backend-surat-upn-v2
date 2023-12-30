@@ -19,18 +19,15 @@ module.exports = {
       password: {
         type: Sequelize.STRING,
       },
-      departemen_id: {
+      role_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: "Departemens",
+          model: "Role_users",
           key: "id",
         },
         onUpdate: "CASCADE",
         onDelete: "SET NULL",
-      },
-      remember_token: {
-        type: Sequelize.TEXT,
       },
       createdAt: {
         allowNull: false,

@@ -3,7 +3,7 @@ const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Users extends Model {
     static associate(models) {
-      Users.belongsTo(models.Departemen, { foreignKey: "departemen_id" });
+      Users.belongsTo(models.Role_user, { foreignKey: "role_id" });
     }
   }
   Users.init(
@@ -14,17 +14,16 @@ module.exports = (sequelize, DataTypes) => {
         unique: true,
       },
       password: DataTypes.STRING,
-      departemen_id: {
+      role_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-          model: "Departemen",
+          model: "Role_user",
           key: "id",
         },
         onUpdate: "CASCADE",
         onDelete: "SET NULL",
       },
-      remember_token: DataTypes.TEXT,
     },
     {
       sequelize,

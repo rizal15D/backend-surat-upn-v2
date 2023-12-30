@@ -1,5 +1,7 @@
 npm install express
 npm install sequelize-cli
+npm install http-status-codes
+npm install multer
 
 change the 'config.json'
 
