@@ -1,6 +1,6 @@
 const express = require("express");
 const { Users } = require("../../models");
-const jwt = require("jsonwebtoken");
+// const jwt = require("jsonwebtoken");
 
 const app = express.Router();
 // Get all users
@@ -60,4 +60,4 @@ app.delete("/:id", async (req, res) => {
   }
 });
 
-module.exports = { app };
+module.exports = app;

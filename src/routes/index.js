@@ -24,7 +24,8 @@ router.use(express.urlencoded({ extended: true }));
 
 router.post("/auth/login", authController.login);
 router.post("/auth/register", authController.register);
-router.use("/role-user", role_user_controller);
+router.use("/role-user", authMiddleware, role_user_controller);
+router.use("/user", authMiddleware, userController);
 
 // router.use("api/v1", (authMiddleware) => {
 //   router.post("/auth/register", authController.register);
