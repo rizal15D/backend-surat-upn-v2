@@ -1,6 +1,6 @@
 const express = require("express");
 const { Users } = require("../../models");
-const isAdmin = require('../middleware/adminMiddleware');
+const isAdmin = require("../middleware/adminMiddleware");
 const bcrypt = require("bcrypt");
 
 const app = express.Router();
@@ -35,9 +35,12 @@ app.put("/:id", isAdmin, async (req, res) => {
     if (password) {
       hashedPassword = await bcrypt.hash(password, 10);
     }
-    const [updated] = await Users.update({ name, email, password: hashedPassword, role_id }, {
-      where: { id: req.params.id },
-    });
+    const [updated] = await Users.update(
+      { name, email, password: hashedPassword, role_id },
+      {
+        where: { id: req.params.id },
+      }
+    );
     if (updated) {
       const updatedUser = await Users.findByPk(req.params.id);
       res.json(updatedUser);
