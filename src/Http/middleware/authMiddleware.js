@@ -4,7 +4,10 @@ const config = require("../../../process.env");
 module.exports = function (req, res, next) {
   const tokenWithBearer = req.header('Authorization');
   if (!tokenWithBearer) return res.status(401).send('Access Denied: No Token Provided!');
-
+  if (tokenWithBearer !== `Bearer ${process.env.secret_key}`) {
+    return res.status(401).end('Unauthorized');
+  }
+  
   const token = tokenWithBearer.split(' ')[1];
 
   try {
