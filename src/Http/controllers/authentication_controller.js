@@ -1,7 +1,7 @@
 const bcrypt = require("bcrypt");
 const { StatusCodes } = require("http-status-codes");
 const { Users, Role_user } = require("../../models");
-const config = require("../../../config/config.json");
+const config = require("../../../process.env");
 const jwt = require("jsonwebtoken");
 
 const environment = "development";
