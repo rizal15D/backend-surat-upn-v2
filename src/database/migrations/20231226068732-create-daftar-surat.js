@@ -2,43 +2,75 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("Notifikasis", {
+    await queryInterface.createTable("Daftar_surats", {
       id: {
         allowNull: false,
         autoIncrement: true,
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      surat_id: {
+      pin: {
+        type: Sequelize.BOOLEAN,
+      },
+      dibaca: {
+        type: Sequelize.BOOLEAN,
+      },
+      template_surat_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: "Daftar_surats",
+          model: "Template_surats",
           key: "id",
         },
         onUpdate: "CASCADE",
         onDelete: "SET NULL",
       },
-      role_id_dari: {
+      user_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: "Role_users",
+          model: "Users",
           key: "id",
         },
         onUpdate: "CASCADE",
         onDelete: "SET NULL",
       },
-      role_id_ke: {
+      tanggal: {
+        type: Sequelize.DATE,
+      },
+      status_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
         references: {
-          model: "Role_users",
+          model: "Status",
           key: "id",
         },
         onUpdate: "CASCADE",
         onDelete: "SET NULL",
       },
+      lokasi_surat: {
+        type: Sequelize.STRING,
+      },
+      persetujuan_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: "Persetujuans",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "SET NULL",
+      },
+      // komentar_id: {
+      //   type: Sequelize.INTEGER,
+      //   allowNull: false,
+      //   references: {
+      //     model: "Komentars",
+      //     key: "id",
+      //   },
+      //   onUpdate: "CASCADE",
+      //   onDelete: "SET NULL",
+      // },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,
@@ -50,6 +82,6 @@ module.exports = {
     });
   },
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("Notifikasis");
+    await queryInterface.dropTable("Daftar_surats");
   },
 };
