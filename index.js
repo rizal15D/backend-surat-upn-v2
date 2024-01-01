@@ -2,6 +2,7 @@ const express = require("express");
 const app = express();
 // const port = 3000;
 require("dotenv").config();
+require('pg');
 const router = require("./src/routes/index.js");
 // require('./db.js');
 
