@@ -7,7 +7,7 @@ module.exports = {
   development: {
     url: `postgres://${stringUser}:${stringPassword}@${process.env.POSTGRES_HOST}:5432/${process.env.POSTGRES_DATABASE}`,
     host: process.env.POSTGRES_HOST,
-    user: stringUser,
+    username: stringUser,
     password: stringPassword,
     // database: process.env.POSTGRES_DATABASE,
     // "username": process.env.DB_USERNAME,
@@ -26,7 +26,7 @@ module.exports = {
   test: {
     url: `postgres://${stringUser}:${stringPassword}@${process.env.POSTGRES_HOST}:5432/${process.env.POSTGRES_DATABASE}`,
     host: process.env.POSTGRES_HOST,
-    user: stringUser,
+    username: stringUser,
     password: stringPassword,
     // database: process.env.POSTGRES_DATABASE,
     // "username": process.env.DB_USERNAME,
@@ -45,7 +45,7 @@ module.exports = {
   production: {
     url: `postgres://${stringUser}:${stringPassword}@${process.env.POSTGRES_HOST}:5432/${process.env.POSTGRES_DATABASE}`,
     host: process.env.POSTGRES_HOST,
-    user: stringUser,
+    username: stringUser,
     password: stringPassword,
     // database: process.env.POSTGRES_DATABASE,
     // "username": process.env.DB_USERNAME,
