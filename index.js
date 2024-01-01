@@ -14,7 +14,7 @@ app.use(router);
 
 const sequelize = new Sequelize(process.env.POSTGRES_URL, {
   dialect: 'postgres',
-  dialectModule: require('pg'),
+  // dialectModule: require('pg'),
   dialectOptions: {
     ssl: {
       require: true,
@@ -22,7 +22,7 @@ const sequelize = new Sequelize(process.env.POSTGRES_URL, {
     },
   },
 });
-
+// console.log(process.env.POSTGRES_URL);
 sequelize.authenticate()
   .then(() => {
     console.log("Connected to postgres database!");
