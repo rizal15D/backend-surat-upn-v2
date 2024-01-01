@@ -1,28 +1,9 @@
-require('dotenv').config();
+require("dotenv").config();
 
 module.exports = {
-    "development": {
-        "url": process.env.POSTGRES_URL,
-        'host': process.env.POSTGRES_HOST,
-        // 'user': process.env.POSTGRES_USER,
-        // 'password': process.env.POSTGRES_PASSWORD,
-        // 'database': process.env.POSTGRES_DATABASE,
-        // "username": process.env.DB_USERNAME,
-        // "password": process.env.DB_PASSWORD,
-        // "database": process.env.DB_NAME,
-        // "host": process.env.DB_HOST,
-        "dialect": process.env.DB_DIALECT,
-        "secret_key": process.env.SECRET_KEY,
-        // "dialectOptions": {
-        //     "ssl": {
-        //     "require": true,
-        //     "rejectUnauthorized": false
-        //     }
-        // }
-    },
-  "test": {
-    "url": process.env.POSTGRES_URL,
-    'host': process.env.POSTGRES_HOST,
+  development: {
+    url: process.env.POSTGRES_URL + "?sslmode=require",
+    host: process.env.POSTGRES_HOST,
     // 'user': process.env.POSTGRES_USER,
     // 'password': process.env.POSTGRES_PASSWORD,
     // 'database': process.env.POSTGRES_DATABASE,
@@ -30,8 +11,8 @@ module.exports = {
     // "password": process.env.DB_PASSWORD,
     // "database": process.env.DB_NAME,
     // "host": process.env.DB_HOST,
-    "dialect": process.env.DB_DIALECT,
-    "secret_key": process.env.SECRET_KEY,
+    dialect: process.env.DB_DIALECT,
+    secret_key: process.env.SECRET_KEY,
     // "dialectOptions": {
     //     "ssl": {
     //     "require": true,
@@ -39,9 +20,9 @@ module.exports = {
     //     }
     // }
   },
-  "production": {
-    "url": process.env.POSTGRES_URL,
-    'host': process.env.POSTGRES_HOST,
+  test: {
+    url: process.env.POSTGRES_URL + "?sslmode=require",
+    host: process.env.POSTGRES_HOST,
     // 'user': process.env.POSTGRES_USER,
     // 'password': process.env.POSTGRES_PASSWORD,
     // 'database': process.env.POSTGRES_DATABASE,
@@ -49,13 +30,32 @@ module.exports = {
     // "password": process.env.DB_PASSWORD,
     // "database": process.env.DB_NAME,
     // "host": process.env.DB_HOST,
-    "dialect": process.env.DB_DIALECT,
-    "secret_key": process.env.SECRET_KEY,
+    dialect: process.env.DB_DIALECT,
+    secret_key: process.env.SECRET_KEY,
     // "dialectOptions": {
     //     "ssl": {
     //     "require": true,
     //     "rejectUnauthorized": false
     //     }
     // }
-  }
-}
+  },
+  production: {
+    url: process.env.POSTGRES_URL + "?sslmode=require",
+    host: process.env.POSTGRES_HOST,
+    // 'user': process.env.POSTGRES_USER,
+    // 'password': process.env.POSTGRES_PASSWORD,
+    // 'database': process.env.POSTGRES_DATABASE,
+    // "username": process.env.DB_USERNAME,
+    // "password": process.env.DB_PASSWORD,
+    // "database": process.env.DB_NAME,
+    // "host": process.env.DB_HOST,
+    dialect: process.env.DB_DIALECT,
+    secret_key: process.env.SECRET_KEY,
+    // "dialectOptions": {
+    //     "ssl": {
+    //     "require": true,
+    //     "rejectUnauthorized": false
+    //     }
+    // }
+  },
+};
