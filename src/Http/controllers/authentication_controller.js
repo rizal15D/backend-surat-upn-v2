@@ -1,11 +1,13 @@
 const bcrypt = require("bcrypt");
 const { StatusCodes } = require("http-status-codes");
 const { Users, Role_user } = require("../../models");
-const config = require("../../../process.env");
+// const config = require("../../../process.env");
 const jwt = require("jsonwebtoken");
 
-const environment = "development";
-const secretKey = config[environment].secret_key;
+// const environment = "development";
+// const secretKey = config[environment].secret_key;
+
+const secretKey = process.env.SECRET_KEY;
 
 const register = async (req, res) => {
   try {
