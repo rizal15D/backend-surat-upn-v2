@@ -1,10 +1,11 @@
 const express = require("express");
-require("dotenv").config();
 const app = express();
 const port = 3000;
+require("dotenv").config();
 const router = require("./src/routes/index.js");
-
+const path = require('path');
 const { Sequelize } = require('sequelize');
+// const { Umzug, SequelizeStorage } = require('umzug');
 
 app.use(express.json());
 app.use(router);
@@ -23,9 +24,6 @@ const sequelize = new Sequelize(process.env.POSTGRES_URL, {
 sequelize.authenticate()
   .then(() => {
     console.log("Connected to postgres database!");
-  })
-  .catch(err => {
-    console.error('Unable to connect to the database:', err);
   });
 
 app.listen(port, () => {
