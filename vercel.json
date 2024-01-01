@@ -16,5 +16,9 @@
         "DB_DIALECT": "@db_dialect",
         "SECRET_KEY": "@secret_key"
       },
-    "installCommand": "npm install pg"
+    "installCommand": "npm install pg",
+    "scripts": {
+        "migrate": "sequelize db:migrate",
+        "seed": "sequelize db:seed:all"
+      }
 }
