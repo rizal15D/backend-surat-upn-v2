@@ -12,6 +12,11 @@ const secretKey = process.env.SECRET_KEY;
 const register = async (req, res) => {
   try {
     const { name, email, password, role_id } = req.body;
+
+    const existingUser = await Users.findOne({ where: { email } });
+    if (existingUser) {
+      return res.status(400).json({ error: "User with this email already exists" });
+    }
     const hashedPassword = await bcrypt.hash(password, 10);
     const role_user = await Role_user.findOne({
       where: { id: role_id },

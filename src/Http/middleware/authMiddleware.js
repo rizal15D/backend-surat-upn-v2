@@ -4,9 +4,9 @@ const jwt = require("jsonwebtoken");
 module.exports = function (req, res, next) {
   const tokenWithBearer = req.header('Authorization');
   if (!tokenWithBearer) return res.status(401).send('Access Denied: No Token Provided!');
-  if (tokenWithBearer !== `Bearer ${process.env.SECRET_KEY}`) {
-    return res.status(401).end('Unauthorized');
-  }
+  // if (tokenWithBearer !== `Bearer ${process.env.SECRET_KEY}`) {
+  //   return res.status(401).end('Unauthorized');
+  // }
   
   const token = tokenWithBearer.split(' ')[1];
 
