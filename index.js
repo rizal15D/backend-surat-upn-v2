@@ -3,9 +3,9 @@ const app = express();
 const port = 3000;
 require("dotenv").config();
 const router = require("./src/routes/index.js");
-const path = require('path');
+// const path = require('path');
 const { Sequelize } = require('sequelize');
-require('./secret.js');
+// require('./secret.js');
 
 // const { Umzug, SequelizeStorage } = require('umzug');
 
