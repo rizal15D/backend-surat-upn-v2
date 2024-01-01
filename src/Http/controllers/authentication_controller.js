@@ -1,4 +1,4 @@
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const { StatusCodes } = require("http-status-codes");
 const { Users, Role_user } = require("../../models");
 const config = require("../../../config/config.js");
