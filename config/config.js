@@ -3,7 +3,7 @@ require('dotenv').config();
 module.exports = {
     "development": {
         "url": process.env.POSTGRES_URL,
-        // 'host': process.env.POSTGRES_HOST,
+        'host': process.env.POSTGRES_HOST,
         // 'user': process.env.POSTGRES_USER,
         // 'password': process.env.POSTGRES_PASSWORD,
         // 'database': process.env.POSTGRES_DATABASE,
@@ -22,7 +22,7 @@ module.exports = {
     },
   "test": {
     "url": process.env.POSTGRES_URL,
-    // 'host': process.env.POSTGRES_HOST,
+    'host': process.env.POSTGRES_HOST,
     // 'user': process.env.POSTGRES_USER,
     // 'password': process.env.POSTGRES_PASSWORD,
     // 'database': process.env.POSTGRES_DATABASE,
@@ -41,7 +41,7 @@ module.exports = {
   },
   "production": {
     "url": process.env.POSTGRES_URL,
-    // 'host': process.env.POSTGRES_HOST,
+    'host': process.env.POSTGRES_HOST,
     // 'user': process.env.POSTGRES_USER,
     // 'password': process.env.POSTGRES_PASSWORD,
     // 'database': process.env.POSTGRES_DATABASE,
