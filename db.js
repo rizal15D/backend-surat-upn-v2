@@ -23,22 +23,3 @@ const sequelize = new Sequelize(process.env.POSTGRES_URL, {
     });
 
 module.exports = sequelize;
-
-// const pg = require('pg');
-
-// const { Pool } = pg;
-
-// const pool = new Pool({
-//   connectionString: process.env.POSTGRES_URL + "?sslmode=require",
-// })
-
-// pool.connect()
-//   .then(() => {
-//     console.log("Connected to postgres database!");
-//   })
-//   .catch(err => {
-//     console.error('Error connecting to the database:', err);
-//   });
-
-
-// module.exports = pool;
