@@ -2,7 +2,7 @@ require("dotenv").config();
 
 module.exports = {
   development: {
-    url: process.env.POSTGRES_URL + "?sslmode=require",
+    url: process.env.POSTGRES_URL,
     host: process.env.POSTGRES_HOST,
     // 'user': process.env.POSTGRES_USER,
     // 'password': process.env.POSTGRES_PASSWORD,
@@ -21,7 +21,7 @@ module.exports = {
     // }
   },
   test: {
-    url: process.env.POSTGRES_URL + "?sslmode=require",
+    url: process.env.POSTGRES_URL,
     host: process.env.POSTGRES_HOST,
     // 'user': process.env.POSTGRES_USER,
     // 'password': process.env.POSTGRES_PASSWORD,
@@ -40,7 +40,7 @@ module.exports = {
     // }
   },
   production: {
-    url: process.env.POSTGRES_URL + "?sslmode=require",
+    url: process.env.POSTGRES_URL,
     host: process.env.POSTGRES_HOST,
     // 'user': process.env.POSTGRES_USER,
     // 'password': process.env.POSTGRES_PASSWORD,
