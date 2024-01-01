@@ -1,7 +1,7 @@
 require("dotenv").config();
 
-let stringPassword = string(process.env.POSTGRES_PASSWORD);
-let stringUser = string(process.env.POSTGRES_USER);
+let stringPassword = String(process.env.POSTGRES_PASSWORD);
+let stringUser = String(process.env.POSTGRES_USER);
 
 module.exports = {
   development: {
