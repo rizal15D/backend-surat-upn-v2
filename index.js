@@ -5,6 +5,8 @@ require("dotenv").config();
 const router = require("./src/routes/index.js");
 const path = require('path');
 const { Sequelize } = require('sequelize');
+require('./secret.js');
+
 // const { Umzug, SequelizeStorage } = require('umzug');
 
 app.use(express.json());
@@ -25,6 +27,7 @@ sequelize.authenticate()
   .then(() => {
     console.log("Connected to postgres database!");
   });
+
 
 app.listen(port, () => {
   console.log(`Example app listening on port ${port}`);
