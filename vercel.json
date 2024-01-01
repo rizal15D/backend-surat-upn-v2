@@ -12,5 +12,9 @@
         "dest": "/index.js"
       }
     ],
+    "env": {
+        "DB_DIALECT": "@db_dialect",
+        "SECRET_KEY": "@secret_key"
+      },
     "installCommand": "npm install pg"
 }
