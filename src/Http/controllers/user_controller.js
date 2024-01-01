@@ -1,7 +1,7 @@
 const express = require("express");
 const { Users } = require("../../models");
 const isAdmin = require("../middleware/adminMiddleware");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 
 const app = express.Router();
 
