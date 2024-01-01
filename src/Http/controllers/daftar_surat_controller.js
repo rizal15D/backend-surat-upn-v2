@@ -6,7 +6,7 @@ const {
   Status,
   Persetujuan,
 } = require("../../models");
-const config = require("../../../process.env");
+const config = require("../../../config/config.js");
 const jwt = require("jsonwebtoken");
 const path = require("path");
 
