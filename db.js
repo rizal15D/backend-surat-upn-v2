@@ -10,6 +10,11 @@ const sequelize = new Sequelize(process.env.POSTGRES_URL, {
         rejectUnauthorized: false,
       },
     },
+    pool: {
+        max: 10, // Increase this number
+        idle: 30000, // Increase this number
+        acquire: 60000, // Increase this number
+      },
   });
   // console.log(process.env.POSTGRES_URL);
   sequelize.authenticate()
