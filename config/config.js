@@ -5,7 +5,7 @@ let stringPassword = String(process.env.POSTGRES_PASSWORD);
 module.exports = {
   development: {
     url: `postgres://${process.env.POSTGRES_USER}:${stringPassword}@${process.env.POSTGRES_HOST}:5432/${process.env.POSTGRES_DATABASE}`,
-    // host: process.env.POSTGRES_HOST,
+    host: process.env.POSTGRES_HOST,
     // user: process.env.POSTGRES_USER,
     // password: stringPassword,
     // database: process.env.POSTGRES_DATABASE,
@@ -15,16 +15,16 @@ module.exports = {
     // "host": process.env.DB_HOST,
     dialect: process.env.DB_DIALECT,
     secret_key: process.env.SECRET_KEY,
-    // dialectOptions: {
-    //   ssl: {
-    //     require: true,
-    //     rejectUnauthorized: false,
-    //   },
-    // },
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false,
+      },
+    },
   },
   test: {
     url: `postgres://${process.env.POSTGRES_USER}:${stringPassword}@${process.env.POSTGRES_HOST}:5432/${process.env.POSTGRES_DATABASE}`,
-    // host: process.env.POSTGRES_HOST,
+    host: process.env.POSTGRES_HOST,
     // user: process.env.POSTGRES_USER,
     // password: stringPassword,
     // database: process.env.POSTGRES_DATABASE,
@@ -34,16 +34,16 @@ module.exports = {
     // "host": process.env.DB_HOST,
     dialect: process.env.DB_DIALECT,
     secret_key: process.env.SECRET_KEY,
-    // dialectOptions: {
-    //   ssl: {
-    //     require: true,
-    //     rejectUnauthorized: false,
-    //   },
-    // },
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false,
+      },
+    },
   },
   production: {
     url: `postgres://${process.env.POSTGRES_USER}:${stringPassword}@${process.env.POSTGRES_HOST}:5432/${process.env.POSTGRES_DATABASE}`,
-    // host: process.env.POSTGRES_HOST,
+    host: process.env.POSTGRES_HOST,
     // user: process.env.POSTGRES_USER,
     // password: stringPassword,
     // database: process.env.POSTGRES_DATABASE,
@@ -53,11 +53,11 @@ module.exports = {
     // "host": process.env.DB_HOST,
     dialect: process.env.DB_DIALECT,
     secret_key: process.env.SECRET_KEY,
-    // dialectOptions: {
-    //   ssl: {
-    //     require: true,
-    //     rejectUnauthorized: false,
-    //   },
-    // },
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false,
+      },
+    },
   },
 };
