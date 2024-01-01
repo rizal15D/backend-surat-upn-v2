@@ -1,13 +1,14 @@
 require("dotenv").config();
 
 let stringPassword = String(process.env.POSTGRES_PASSWORD);
+let stringUser = String(process.env.POSTGRES_USER);
 
 module.exports = {
   development: {
-    url: `postgres://${process.env.POSTGRES_USER}:${stringPassword}@${process.env.POSTGRES_HOST}:5432/${process.env.POSTGRES_DATABASE}`,
+    url: `postgres://${stringUser}:${stringPassword}@${process.env.POSTGRES_HOST}:5432/${process.env.POSTGRES_DATABASE}`,
     host: process.env.POSTGRES_HOST,
-    user: process.env.POSTGRES_USER,
-    password: process.env.POSTGRES_PASSWORD,
+    user: process.env.stringUser,
+    password: process.env.stringPassword,
     // database: process.env.POSTGRES_DATABASE,
     // "username": process.env.DB_USERNAME,
     // "password": process.env.DB_PASSWORD,
@@ -23,10 +24,10 @@ module.exports = {
     },
   },
   test: {
-    url: `postgres://${process.env.POSTGRES_USER}:${stringPassword}@${process.env.POSTGRES_HOST}:5432/${process.env.POSTGRES_DATABASE}`,
+    url: `postgres://${stringUser}:${stringPassword}@${process.env.POSTGRES_HOST}:5432/${process.env.POSTGRES_DATABASE}`,
     host: process.env.POSTGRES_HOST,
-    user: process.env.POSTGRES_USER,
-    password: process.env.POSTGRES_PASSWORD,
+    user: process.env.stringUser,
+    password: process.env.stringPassword,
     // database: process.env.POSTGRES_DATABASE,
     // "username": process.env.DB_USERNAME,
     // "password": process.env.DB_PASSWORD,
@@ -42,10 +43,10 @@ module.exports = {
     },
   },
   production: {
-    url: `postgres://${process.env.POSTGRES_USER}:${stringPassword}@${process.env.POSTGRES_HOST}:5432/${process.env.POSTGRES_DATABASE}`,
+    url: `postgres://${stringUser}:${stringPassword}@${process.env.POSTGRES_HOST}:5432/${process.env.POSTGRES_DATABASE}`,
     host: process.env.POSTGRES_HOST,
-    user: process.env.POSTGRES_USER,
-    password: process.env.POSTGRES_PASSWORD,
+    user: process.env.stringUser,
+    password: process.env.stringPassword,
     // database: process.env.POSTGRES_DATABASE,
     // "username": process.env.DB_USERNAME,
     // "password": process.env.DB_PASSWORD,
