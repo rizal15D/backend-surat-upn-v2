@@ -2,16 +2,13 @@
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
   class Template_surat extends Model {
-    static associate(models) {
-      Template_surat.hasMany(models.Daftar_surat, {
-        foreignKey: "template_surat_id",
-      });
-    }
+    static associate(models) {}
   }
   Template_surat.init(
     {
       judul: DataTypes.STRING,
       lokasi: DataTypes.STRING,
+      deskripsi: DataTypes.TEXT,
     },
     {
       sequelize,

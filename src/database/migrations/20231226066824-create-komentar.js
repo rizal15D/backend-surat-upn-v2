@@ -9,16 +9,16 @@ module.exports = {
         primaryKey: true,
         type: Sequelize.INTEGER,
       },
-      surat_id: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: "Daftar_surats",
-          key: "id",
-        },
-        onUpdate: "CASCADE",
-        onDelete: "SET NULL",
-      },
+      // surat_id: {
+      //   type: Sequelize.INTEGER,
+      //   allowNull: false,
+      //   references: {
+      //     model: "Daftar_surats",
+      //     key: "id",
+      //   },
+      //   onUpdate: "CASCADE",
+      //   onDelete: "SET NULL",
+      // },
       role_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
