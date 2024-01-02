@@ -15,15 +15,8 @@ module.exports = {
       dibaca: {
         type: Sequelize.BOOLEAN,
       },
-      template_surat_id: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: "Template_surats",
-          key: "id",
-        },
-        onUpdate: "CASCADE",
-        onDelete: "SET NULL",
+      judul: {
+        type: Sequelize.STRING,
       },
       user_id: {
         type: Sequelize.INTEGER,
@@ -61,16 +54,16 @@ module.exports = {
         onUpdate: "CASCADE",
         onDelete: "SET NULL",
       },
-      // komentar_id: {
-      //   type: Sequelize.INTEGER,
-      //   allowNull: false,
-      //   references: {
-      //     model: "Komentars",
-      //     key: "id",
-      //   },
-      //   onUpdate: "CASCADE",
-      //   onDelete: "SET NULL",
-      // },
+      komentar_id: {
+        type: Sequelize.INTEGER,
+        allowNull: true,
+        references: {
+          model: "Komentars",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "SET NULL",
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

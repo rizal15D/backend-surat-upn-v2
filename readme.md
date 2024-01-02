@@ -1,9 +1,6 @@
-npm install express
-npm install sequelize-cli
-npm install http-status-codes
-npm install multer
+npm install
 
-change the 'config.json'
+change the 'config.json' and .env
 
 npx sequelize-cli db:migrate
 npx sequelize-cli db:seed:all

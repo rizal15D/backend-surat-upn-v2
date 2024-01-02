@@ -29,6 +29,19 @@ module.exports = {
         onUpdate: "CASCADE",
         onDelete: "SET NULL",
       },
+      prodi_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: "Prodis",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "SET NULL",
+      },
+      aktif: {
+        type: Sequelize.BOOLEAN,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

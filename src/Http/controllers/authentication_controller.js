@@ -1,6 +1,6 @@
 const bcrypt = require("bcryptjs");
 const { StatusCodes } = require("http-status-codes");
-const { Users, Role_user } = require("../../models");
+const { Users, Role_user, Prodi } = require("../../models");
 const config = require("../../../config/config.js");
 const jwt = require("jsonwebtoken");
 
@@ -9,25 +9,39 @@ const secretKey = config[environment].secret_key;
 
 const register = async (req, res) => {
   try {
-    const { name, email, password, role_id } = req.body;
+    const { name, email, password, role_id, prodi_id } = req.body;
 
     const existingUser = await Users.findOne({ where: { email } });
     if (existingUser) {
-      return res.status(400).json({ error: "User with this email already exists" });
+      return res
+        .status(400)
+        .json({ error: "User with this email already exists" });
     }
     const hashedPassword = await bcrypt.hash(password, 10);
     const role_user = await Role_user.findOne({
       where: { id: role_id },
     });
+    const prodi_user = await Prodi.findOne({
+      where: { id: prodi_id },
+    });
+    if (role_user.name === "Prodi" && prodi_user.name === "-") {
+      res.send("Please, Input the prodi Id");
+    }
+    // else {
+    //   res.send(`prodi Id =  ${prodi_user.name}`);
+    // }
 
     if (!role_user) {
       return res.status(400).json({ error: "No such role_user exists" });
     }
+
     const user = await Users.create({
       name,
       email,
       password: hashedPassword,
       role_id: role_user.id,
+      prodi_id: prodi_user.id,
+      aktif: 0,
     });
     const token = jwt.sign({ id: user.id }, secretKey, { expiresIn: "1h" });
     res
@@ -51,9 +65,9 @@ const login = async (req, res) => {
         token,
         user: {
           id: user.id,
-          email: user.email,
-          password: user.password,
+          name: user.name,
           role_id: user.role_id,
+          prodi_id: user.prodi_id,
         },
       });
     } else {

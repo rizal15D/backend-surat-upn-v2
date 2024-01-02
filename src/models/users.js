@@ -4,6 +4,7 @@ module.exports = (sequelize, DataTypes) => {
   class Users extends Model {
     static associate(models) {
       Users.belongsTo(models.Role_user, { foreignKey: "role_id" });
+      Users.belongsTo(models.Role_user, { foreignKey: "prodi_id" });
       Users.hasMany(models.Daftar_surat, { foreignKey: "user_id" });
     }
   }
@@ -24,6 +25,19 @@ module.exports = (sequelize, DataTypes) => {
         },
         onUpdate: "CASCADE",
         onDelete: "SET NULL",
+      },
+      prodi_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: "Prodi",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "SET NULL",
+      },
+      aktif: {
+        type: DataTypes.BOOLEAN,
       },
     },
     {

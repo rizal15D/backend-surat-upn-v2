@@ -3,6 +3,7 @@ const multer = require("multer");
 const path = require("path");
 const { StatusCodes } = require("http-status-codes");
 const { Template_surat } = require("../../models");
+const isAdmin = require("../middleware/adminMiddleware");
 const app = express.Router();
 
 const storage = multer.diskStorage({
@@ -35,25 +36,38 @@ app
     res.send(await Template_surat.findAll());
   })
 
-  .post("/uploads", upload.single("surat"), async function (req, res, next) {
-    try {
-      const judul = req.file.originalname;
-      const lokasi = path.join(__dirname, "../../../template_surat");
-      const template_surat = await Template_surat.create({
-        judul: judul,
-        lokasi: lokasi,
-      });
+  .post(
+    "/uploads",
+    upload.single("surat"),
+    isAdmin,
+    async function (req, res, next) {
+      try {
+        const { deskripsi } = req.body;
+        const judul = req.file.originalname;
+        const judulCheck = await Template_surat.findOne({ where: { judul } });
 
-      res
-        .status(StatusCodes.CREATED)
-        .json({ message: "File successfully uploaded", template_surat });
-    } catch (error) {
-      console.error("Error:", error);
-      res
-        .status(StatusCodes.INTERNAL_SERVER_ERROR)
-        .json({ error: "Internal Server Error" });
+        if (judulCheck) {
+          res.json("judul/file sudah ada");
+        }
+
+        const lokasi = path.join(__dirname, "../../../template_surat");
+        const template_surat = await Template_surat.create({
+          judul,
+          lokasi,
+          deskripsi,
+        });
+
+        res
+          .status(StatusCodes.CREATED)
+          .json({ message: "File successfully uploaded", template_surat });
+      } catch (error) {
+        console.error("Error:", error);
+        res
+          .status(StatusCodes.INTERNAL_SERVER_ERROR)
+          .json({ error: "Internal Server Error" });
+      }
     }
-  })
+  )
 
   .delete("/", async (req, res) => {
     try {
