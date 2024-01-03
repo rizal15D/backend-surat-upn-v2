@@ -4,7 +4,7 @@ module.exports = async function isAdmin(req, res, next) {
   try {
     const user = await Users.findOne({ where: { id: req.user.id } });
 
-    if (user && user.role_id === 4) {
+    if (user && user.role_id === 1) {
       next();
     } else {
       res.status(403).json({ error: "User is not an admin" });
