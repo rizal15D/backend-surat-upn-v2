@@ -6,26 +6,35 @@ module.exports = {
       "Role_users",
       [
         {
+          id: 1,
+          name: "Super Admin",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          id: 2,
+          name: "TU",
+          createdAt: new Date(),
+          updatedAt: new Date(),
+        },
+        {
+          id: 3,
           name: "Prodi",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
+          id: 4,
           name: "Dekan",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
         {
+          id: 5,
           name: "Admin Dekan",
           createdAt: new Date(),
           updatedAt: new Date(),
         },
-        {
-          name: "Admin Master",
-          createdAt: new Date(),
-          updatedAt: new Date(),
-        },
-        // add more departments as needed
       ],
       {}
     );

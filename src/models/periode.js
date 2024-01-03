@@ -1,29 +1,31 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class Komentar extends Model {
+  class Periode extends Model {
     static associate(models) {
-      Komentar.belongsTo(models.Role_user, { foreignKey: "role_id" });
+      Periode.belongsTo(models.Prodi, { foreignKey: "prodi_id" });
     }
   }
-  Komentar.init(
+  Periode.init(
     {
-      role_id: {
+      tahun: DataTypes.DATE,
+      semester: DataTypes.STRING,
+      prodi_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {
-          model: "Role_user",
+          model: "Prodis",
           key: "id",
         },
         onUpdate: "CASCADE",
         onDelete: "SET NULL",
       },
-      komentar: DataTypes.TEXT,
+      status: DataTypes.BOOLEAN,
     },
     {
       sequelize,
-      modelName: "Komentar",
+      modelName: "Periode",
     }
   );
-  return Komentar;
+  return Periode;
 };

@@ -17,9 +17,9 @@ app.get("/", isAdmin, async (req, res) => {
   }
 });
 
-// app.get("/:id", async (req, res) => {
+// app.get("/", async (req, res) => {
 //   try {
-//     const user = await Users.findByPk(req.params.id);
+//     const user = await Users.findByPk(req.query.id);
 //     if (user) {
 //       res.json(user);
 //     } else {
