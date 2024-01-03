@@ -118,7 +118,6 @@ const register = async (req, res) => {
 const login = async (req, res) => {
   try {
     const user = await Users.findOne({ where: { email: req.body.email } });
-    // const hashedPassword = await bcrypt.hash(password, 10);
     if (user && (await bcrypt.compare(req.body.password, user.password))) {
       const token = jwt.sign({ id: user.id, aktif: user.aktif }, secretKey, {
         expiresIn: "1h",
