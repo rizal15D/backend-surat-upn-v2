@@ -8,6 +8,7 @@ module.exports = (sequelize, DataTypes) => {
     {
       judul: DataTypes.STRING,
       lokasi: DataTypes.STRING,
+      jenis: DataTypes.STRING,
       deskripsi: DataTypes.TEXT,
     },
     {

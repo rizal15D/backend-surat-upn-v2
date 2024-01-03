@@ -39,6 +39,16 @@ module.exports = {
         onUpdate: "CASCADE",
         onDelete: "SET NULL",
       },
+      fakultas_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: "Fakultas",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "SET NULL",
+      },
       aktif: {
         type: Sequelize.BOOLEAN,
       },

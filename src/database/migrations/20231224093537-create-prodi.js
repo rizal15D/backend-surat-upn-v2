@@ -12,6 +12,19 @@ module.exports = {
       name: {
         type: Sequelize.STRING,
       },
+      kode_prodi: {
+        type: Sequelize.STRING,
+      },
+      fakultas_id: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        references: {
+          model: "Fakultas",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "SET NULL",
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

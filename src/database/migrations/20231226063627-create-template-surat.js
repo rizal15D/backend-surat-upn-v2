@@ -15,6 +15,9 @@ module.exports = {
       lokasi: {
         type: Sequelize.STRING,
       },
+      jenis: {
+        type: Sequelize.STRING,
+      },
       deskripsi: {
         type: Sequelize.TEXT,
       },

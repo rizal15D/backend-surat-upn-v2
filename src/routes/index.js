@@ -1,4 +1,5 @@
 const express = require("express");
+const cors = require("cors");
 const daftarSuratController = require("../Http/controllers/daftar_surat_controller");
 const notifikasiController = require("../Http/controllers/notifikasi_controller");
 const templateController = require("../Http/controllers/template_surat_controller");
@@ -14,12 +15,14 @@ const router = express.Router();
 router.use(express.json());
 router.use(express.urlencoded({ extended: true }));
 
+// router.use(cors());
+
 router.post("/auth/login", authController.login);
 router.post("/auth/register", authController.register);
 router.use("/user", authMiddleware, usersController);
 router.use("/daftarsurat", authMiddleware, daftarSuratController);
 // router.use("/prodi", authMiddleware, prodiController);
-router.use("/role_user", authMiddleware, roleUserController);
+router.use("/role-user", authMiddleware, roleUserController);
 router.use("/template-surat", authMiddleware, templateController);
 router.use("/notifikasi", authMiddleware, notifikasiController);
 router.use("/komentar", authMiddleware, komentarController);

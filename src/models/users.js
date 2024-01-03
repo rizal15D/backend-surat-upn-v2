@@ -4,7 +4,8 @@ module.exports = (sequelize, DataTypes) => {
   class Users extends Model {
     static associate(models) {
       Users.belongsTo(models.Role_user, { foreignKey: "role_id" });
-      Users.belongsTo(models.Role_user, { foreignKey: "prodi_id" });
+      Users.belongsTo(models.Prodi, { foreignKey: "prodi_id" });
+      Users.belongsTo(models.Fakultas, { foreignKey: "fakultas_id" });
       Users.hasMany(models.Daftar_surat, { foreignKey: "user_id" });
     }
   }
@@ -31,6 +32,16 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         references: {
           model: "Prodi",
+          key: "id",
+        },
+        onUpdate: "CASCADE",
+        onDelete: "SET NULL",
+      },
+      fakultas_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: {
+          model: "Fakultas",
           key: "id",
         },
         onUpdate: "CASCADE",
