@@ -7,9 +7,6 @@ const isAdmin = require("../../middleware/adminMiddleware");
 const multer = require("multer");
 const upload = multer({ storage: multer.memoryStorage() });
 const path = require("path");
-const fs = require("fs");
-const fetch = require("node-fetch");
-// require("../../../../template_surat");
 
 function getResourceType(filename) {
   const extension = path.extname(filename).toLowerCase();
@@ -46,24 +43,8 @@ app
       return res.status(404).json({ error: "Template Surat not found" });
     }
 
-    // const fileName = "newFileName.pdf"; // Ganti dengan nama file yang diinginkan
-    const fileName = template_surat.judul;
-    const downloadUrl = `${
-      template_surat.lokasi
-    }?attachment=${encodeURIComponent(fileName)}`;
-
-    // Download file dari Cloudinary
-    const response = await fetch(downloadUrl);
-    const fileBuffer = await response.buffer();
-
-    // Simpan file di server Anda
-    const filePath = path.join(__dirname, "../../../../template_surat/temp");
-    fs.writeFileSync(filePath, fileBuffer);
-
-    // Kembalikan file kepada klien dengan nama yang diinginkan
-    res.download(filePath, fileName);
+    res.redirect(template_surat.lokasi);
   })
-
   .post(
     "/cloudinary",
     upload.fields([
@@ -89,7 +70,9 @@ app
             .upload_stream(
               {
                 resource_type: getResourceType(req.files.surat[0].originalname),
-                public_id: path.parse(req.files.surat[0].originalname),
+                public_id:
+                  path.parse(req.files.surat[0].originalname).name +
+                  path.extname(req.files.surat[0].originalname),
               },
               (error, result) => {
                 if (error) reject(error);
@@ -110,7 +93,9 @@ app
                 resource_type: getResourceType(
                   req.files.thumbnail[0].originalname
                 ),
-                public_id: path.parse(req.files.thumbnail[0].originalname),
+                public_id:
+                  path.parse(req.files.thumbnail[0].originalname).name +
+                  path.extname(req.files.thumbnail[0].originalname),
               },
               (error, result) => {
                 if (error) reject(error);
