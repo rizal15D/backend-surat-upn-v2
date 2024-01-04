@@ -23,7 +23,7 @@ router.use("/user", authMiddleware, usersController);
 router.use("/daftarsurat", authMiddleware, daftarSuratController);
 // router.use("/prodi", authMiddleware, prodiController);
 router.use("/role-user", authMiddleware, roleUserController);
-router.use("/template-surat", templateController);
+router.use("/template-surat", authMiddleware, templateController);
 router.use("/notifikasi", authMiddleware, notifikasiController);
 router.use("/komentar", authMiddleware, komentarController);
 
