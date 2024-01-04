@@ -57,7 +57,7 @@ app
     const fileBuffer = await response.buffer();
 
     // Simpan file di server Anda
-    const filePath = path.join(__dirname, "../../../../template_surat/temp");
+    const filePath = "/tmp/template_surat/temp";
     fs.writeFileSync(filePath, fileBuffer);
 
     // Kembalikan file kepada klien dengan nama yang diinginkan
