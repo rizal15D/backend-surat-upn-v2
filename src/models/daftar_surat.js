@@ -14,6 +14,8 @@ module.exports = (sequelize, DataTypes) => {
       pin: DataTypes.BOOLEAN,
       dibaca: DataTypes.BOOLEAN,
       judul: DataTypes.STRING,
+      thumbnail: DataTypes.STRING,
+      jenis: DataTypes.STRING,
       user_id: {
         type: DataTypes.INTEGER,
         allowNull: false,

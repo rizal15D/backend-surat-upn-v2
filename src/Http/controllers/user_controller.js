@@ -2,6 +2,7 @@ const express = require("express");
 const { Users } = require("../../models");
 const isAdmin = require("../middleware/adminMiddleware");
 const bcrypt = require("bcryptjs");
+const crypto = require("crypto");
 
 const app = express.Router();
 
@@ -30,25 +31,20 @@ app.get("/", isAdmin, async (req, res) => {
 //   }
 // });
 
-app.put("/", isAdmin, async (req, res) => {
-  console.log(req.query);
+app.put("/", async (req, res) => {
   try {
-    const { name, email, role_id, prodi_id, aktif } = req.body;
-    // let hashedPassword;
-    // if (password) {
-    //   hashedPassword = await bcrypt.hash(password, 10);
-    // }
+    const { password } = req.body;
+
+    const hashedPassword = await bcrypt.hash(password, 10);
     const [updated] = await Users.update(
-      { name, email, role_id, prodi_id, aktif },
+      { password: hashedPassword },
       {
-        where: { id: req.query.id },
+        where: { id: req.user.id },
       }
     );
+
     if (updated) {
-      const updatedUser = await Users.findByPk(req.query.id, {
-        attributes: { exclude: ["password"] },
-      });
-      res.json(updatedUser);
+      res.json({ message: "Password updated successfully" });
     } else {
       res.status(404).json({ error: "User not found" });
     }

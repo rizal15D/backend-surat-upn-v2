@@ -28,46 +28,15 @@ app
   })
 
   .get("/", async function (req, res) {
-    res.send(await Template_surat.findAll());
+    res.send(
+      await Template_surat.findAll({
+        attributes: { exclude: ["lokasi", "thumnail", "deskripsi"] },
+      })
+    );
   })
 
   // .use("/uploads/", uploadByMulter)
-
-  .use("/link/", cloudinaryController)
-
-  // .post(
-  //   "/uploads/v3",
-  //   upload.single("surat"),
-  //   isAdmin,
-  //   async function (req, res, next) {
-  //     try {
-  //       const { deskripsi } = req.body;
-  //       const judul = req.file.originalname;
-  //       const judulCheck = await Template_surat.findOne({ where: { judul } });
-
-  //       if (judulCheck) {
-  //         res.json("judul/file sudah ada");
-  //       }
-
-  //       const lokasi = path.join(__dirname, "../../../template_surat");
-  //       const template_surat = await Template_surat.create({
-  //         judul,
-  //         lokasi,
-  //         jenis,
-  //         deskripsi,
-  //       });
-
-  //       res
-  //         .status(StatusCodes.CREATED)
-  //         .json({ message: "File successfully uploaded", template_surat });
-  //     } catch (error) {
-  //       console.error("Error:", error);
-  //       res
-  //         .status(StatusCodes.INTERNAL_SERVER_ERROR)
-  //         .json({ error: "Internal Server Error" });
-  //     }
-  //   }
-  // )
+  .use(cloudinaryController)
 
   .delete("/", async (req, res) => {
     try {

@@ -18,6 +18,12 @@ module.exports = {
       judul: {
         type: Sequelize.STRING,
       },
+      thumbnail: {
+        type: Sequelize.STRING,
+      },
+      jenis: {
+        type: Sequelize.STRING,
+      },
       user_id: {
         type: Sequelize.INTEGER,
         allowNull: false,

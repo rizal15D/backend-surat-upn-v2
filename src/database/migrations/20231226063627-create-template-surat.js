@@ -18,7 +18,7 @@ module.exports = {
       jenis: {
         type: Sequelize.STRING,
       },
-      thumnail: {
+      thumbnail: {
         type: Sequelize.STRING,
       },
       deskripsi: {
