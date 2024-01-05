@@ -1,21 +1,16 @@
+const uploadByMulter = require("../controllers/template_surat_controller/multer_controller");
+const cloudinaryController = require("../controllers/template_surat_controller/cloudinary_controller.js");
 const express = require("express");
-const multer = require("multer");
 const path = require("path");
 const { StatusCodes } = require("http-status-codes");
 const { Template_surat } = require("../../models");
-const isAdmin = require("../middleware/adminMiddleware");
+// const isAdmin = require("../middleware/adminMiddleware");
 const app = express.Router();
-
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "template_surat/");
-  },
-  filename: function (req, file, cb) {
-    cb(null, file.originalname);
-  },
-});
-
-const upload = multer({ storage: storage });
+// const { google } = require('googleapis');
+// const drive = google.drive('v3');
+// const key = require('./path-to-your-service-account-key.json');
+// const upload = multer({ storage: multer.memoryStorage() });
+// const upload = multer();
 
 app
   .get("/download/", async function (req, res) {
@@ -36,38 +31,43 @@ app
     res.send(await Template_surat.findAll());
   })
 
-  .post(
-    "/uploads",
-    upload.single("surat"),
-    isAdmin,
-    async function (req, res, next) {
-      try {
-        const { deskripsi } = req.body;
-        const judul = req.file.originalname;
-        const judulCheck = await Template_surat.findOne({ where: { judul } });
+  // .use("/uploads/", uploadByMulter)
 
-        if (judulCheck) {
-          res.json("judul/file sudah ada");
-        }
+  .use("/link/", cloudinaryController)
 
-        const lokasi = path.join(__dirname, "../../../template_surat");
-        const template_surat = await Template_surat.create({
-          judul,
-          lokasi,
-          deskripsi,
-        });
+  // .post(
+  //   "/uploads/v3",
+  //   upload.single("surat"),
+  //   isAdmin,
+  //   async function (req, res, next) {
+  //     try {
+  //       const { deskripsi } = req.body;
+  //       const judul = req.file.originalname;
+  //       const judulCheck = await Template_surat.findOne({ where: { judul } });
 
-        res
-          .status(StatusCodes.CREATED)
-          .json({ message: "File successfully uploaded", template_surat });
-      } catch (error) {
-        console.error("Error:", error);
-        res
-          .status(StatusCodes.INTERNAL_SERVER_ERROR)
-          .json({ error: "Internal Server Error" });
-      }
-    }
-  )
+  //       if (judulCheck) {
+  //         res.json("judul/file sudah ada");
+  //       }
+
+  //       const lokasi = path.join(__dirname, "../../../template_surat");
+  //       const template_surat = await Template_surat.create({
+  //         judul,
+  //         lokasi,
+  //         jenis,
+  //         deskripsi,
+  //       });
+
+  //       res
+  //         .status(StatusCodes.CREATED)
+  //         .json({ message: "File successfully uploaded", template_surat });
+  //     } catch (error) {
+  //       console.error("Error:", error);
+  //       res
+  //         .status(StatusCodes.INTERNAL_SERVER_ERROR)
+  //         .json({ error: "Internal Server Error" });
+  //     }
+  //   }
+  // )
 
   .delete("/", async (req, res) => {
     try {

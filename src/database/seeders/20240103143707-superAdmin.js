@@ -1,16 +1,19 @@
 "use strict";
 
+const bcrypt = require("bcrypt");
+
 module.exports = {
   up: async (queryInterface, Sequelize) => {
+    const password = "admin";
+    const hashedPassword = await bcrypt.hash(password, 10);
     return queryInterface.bulkInsert(
-      "Users", // kenek cache posgre, dadi 6 saiki info hapus chace
+      "Users",
       [
-        //okeeh tak gelek
         {
           id: 1,
           name: "Super Admin",
           email: "admin",
-          password: "admin",
+          password: hashedPassword,
           role_id: 1,
           prodi_id: 1,
           fakultas_id: 1,
