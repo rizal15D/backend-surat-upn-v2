@@ -17,10 +17,9 @@ router.use(express.urlencoded({ extended: true }));
 
 // router.use(cors());
 
-router.post("/auth/login", authController.login);
-router.post("/auth/register", authController.register);
+router.use("/auth", authController);
 router.use("/user", authMiddleware, usersController);
-router.use("/daftarsurat", authMiddleware, daftarSuratController);
+router.use("/daftar-surat", authMiddleware, daftarSuratController);
 // router.use("/prodi", authMiddleware, prodiController);
 router.use("/role-user", authMiddleware, roleUserController);
 router.use("/template-surat", authMiddleware, templateController);

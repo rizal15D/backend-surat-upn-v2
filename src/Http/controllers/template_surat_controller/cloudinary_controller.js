@@ -9,7 +9,6 @@ const upload = multer({ storage: multer.memoryStorage() });
 const path = require("path");
 const fs = require("fs");
 const fetch = require("node-fetch");
-// require("../../../../template_surat");
 
 function getResourceType(filename) {
   const extension = path.extname(filename).toLowerCase();
@@ -34,7 +33,7 @@ function getResourceType(filename) {
 }
 
 app
-  .get("/cloudinary", async function (req, res) {
+  .get("/download/cloudinary", async function (req, res) {
     const { id } = req.query;
     if (!id) {
       return res.status(400).json({ error: "Invalid params" });
@@ -71,8 +70,12 @@ app
     res.download(filePath, fileName);
   })
 
+  .get("/detail", async (req, res) => {
+    res.json(await Template_surat.findOne({ where: { id: req.query.id } }));
+  })
+
   .post(
-    "/cloudinary",
+    "/upload/cloudinary",
     upload.fields([
       { name: "surat", maxCount: 1 },
       { name: "thumbnail", maxCount: 1 },
@@ -80,6 +83,9 @@ app
     isAdmin,
     async function (req, res, next) {
       try {
+        if (!req.files || !req.files["surat"] || !req.files["thumbnail"]) {
+          return res.status(400).json({ error: "Missing files in request" });
+        }
         const { jenis, deskripsi } = req.body;
         const judul = req.files["surat"][0].originalname;
         const judulCheck = await Template_surat.findOne({ where: { judul } });
@@ -135,7 +141,7 @@ app
           lokasi: suratUrl,
           jenis: jenis || "",
           deskripsi: deskripsi || "",
-          thumnail: thumbnailUrl,
+          thumbnail: thumbnailUrl,
         });
 
         res
