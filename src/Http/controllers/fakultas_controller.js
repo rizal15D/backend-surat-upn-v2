@@ -3,16 +3,33 @@ const { Fakultas } = require("../../models");
 const { StatusCodes } = require("http-status-codes");
 const isAdmin = require("../middleware/adminMiddleware");
 const app = express.Router();
+const { Op } = require("sequelize");
 
 app
   .get("/", async function (req, res) {
-    res.send(await Fakultas.findAll());
+    res.send(
+      await Fakultas.findAll({
+        where: {
+          id: {
+            [Op.ne]: 1, // Menghindari data dengan id 1
+          },
+        },
+      })
+    );
   })
   .post("/", isAdmin, async function (req, res) {
     const { name, jenjang, kode_fakultas } = req.body;
 
     try {
+      const latestFakultas = await Fakultas.findAll({
+        limit: 1,
+        order: [["id", "DESC"]],
+      });
+
+      const latestFakultasId = parseInt(latestFakultas[0].id, 10);
+
       const fakultas = await Fakultas.create({
+        id: latestFakultasId + 1,
         name,
         jenjang,
         kode_fakultas,
