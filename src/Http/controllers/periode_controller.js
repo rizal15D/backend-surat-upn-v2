@@ -1,34 +1,29 @@
 const express = require("express");
-const { Prodi, Fakultas } = require("../../models");
+const { Periode, Prodi } = require("../../models");
 const { StatusCodes } = require("http-status-codes");
+const isAdmin = require("./../middleware/adminMiddleware");
 const app = express.Router();
-const isAdmin = require("../middleware/adminMiddleware");
-const { Op } = require("sequelize");
 
 app
   .get("/", async function (req, res) {
-    res.send(
-      await Prodi.findAll({
-        where: {
-          id: {
-            [Op.ne]: 1, // Menghindari data dengan id 1
-          },
-        },
-      })
-    );
+    res.send(await Periode.findAll());
   })
   .post("/", isAdmin, async function (req, res) {
-    const { name } = req.body;
+    const { tahun, semester } = req.body;
     try {
-      const fakultas_id = await Fakultas.findOne({ where: { id: id } });
-      const prodi = await Prodi.create({
-        name,
-        kode_prodi,
-        fakultas_id,
+      const prodi_id = Prodi.findOne({ where: { id: prodi_id } });
+      if (prodi_id) {
+        res.send("Prodi not found");
+      }
+      const periode = await Periode.create({
+        tahun,
+        semester,
+        prodi_id,
+        status: true,
       });
       res.status(StatusCodes.CREATED).json({
         message: `${
-          (prodi.name, prodi.kode_prodi, prodi.fakultas_id)
+          (periode.tahun, periode.semester, periode.prodi_id, periode.status)
         } created successfully`,
       });
     } catch (error) {
@@ -41,28 +36,30 @@ app
   })
   .put("/", isAdmin, async (req, res) => {
     try {
-      const { name, kode_prodi, fakultas_id } = req.body;
+      const { tahun, status, semester } = req.body;
       const { id } = req.query;
       if (!id) {
         return res.status(400).json({ error: "Invalid params" });
       }
 
-      const prodi = await Prodi.findOne({ where: { id: id } });
+      const periode = await Periode.findOne({ where: { id: id } });
 
-      if (!prodi) {
+      if (!periode) {
         return res.status(404).json({ error: "Prodi not found" });
       }
 
-      prodi.name = name;
-      prodi.kode_prodi = kode_prodi;
-      prodi.fakultas_id = fakultas_id;
+      periode.tahun = tahun;
+      periode.semester = semester;
+      periode.prodi_id = prodi_id;
+      periode.status = status;
 
-      await prodi.save();
+      await periode.save();
 
       res.json({
-        updated: prodi.name,
-        kode_prodi,
-        fakultas_id,
+        updated: periode.tahun,
+        semester,
+        prodi_id,
+        status,
       });
     } catch (error) {
       console.error("Error:", error);
@@ -78,14 +75,14 @@ app
         return res.status(400).json({ error: "Parameter id is required" });
       }
 
-      const deletedProdi = await Prodi.destroy({
+      const deletedPeriode = await Periode.destroy({
         where: { id: id },
       });
 
-      if (deletedProdi) {
-        res.status(200).json({ message: "Prodi deleted successfully" });
+      if (deletedPeriode) {
+        res.status(200).json({ message: "Periode deleted successfully" });
       } else {
-        res.status(404).json({ error: "Prodi not found" });
+        res.status(404).json({ error: "Periode not found" });
       }
     } catch (error) {
       console.error("Error:", error);

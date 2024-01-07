@@ -13,7 +13,7 @@ const environment = "development";
 const secretKey = config[environment].secret_key;
 
 app
-  .post("/register", async (req, res) => {
+  .post("/register", isAdmin, async (req, res) => {
     try {
       const { name, email, role_id, prodi_id, fakultas_id } = req.body;
 
@@ -114,6 +114,32 @@ app
 
       if (updated) {
         res.json({ message: "Password reset successfully", password });
+      } else {
+        res.status(404).json({ error: "User not found" });
+      }
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  })
+
+  .put("/aktivasi", authMiddleware, isAdmin, async (req, res) => {
+    try {
+      const { id, aktif } = req.body;
+      if (id == 1) {
+        return res.json("Error : The User is Admin");
+      }
+      const [updated] = await Users.update(
+        { aktif },
+        {
+          where: { id: id },
+        }
+      );
+
+      if (updated) {
+        const message = aktif
+          ? "User activated successfully"
+          : "User deactivated successfully";
+        res.json({ message });
       } else {
         res.status(404).json({ error: "User not found" });
       }
