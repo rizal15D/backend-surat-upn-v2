@@ -17,6 +17,7 @@ app
       })
     );
   })
+
   .post("/", isAdmin, async function (req, res) {
     const { name, kode_prodi, fakultas_id } = req.body;
     try {
@@ -28,11 +29,16 @@ app
         res.send("fakultas_id not found");
       }
 
+<<<<<<< HEAD
       const latestProdi = await Prodi.findOne({
         order: [["createdAt", "DESC"]], // Mengurutkan berdasarkan createdAt secara descending
       });
       const latestProdiId = latestProdi.id;
       console.log(latestProdiId);
+=======
+      const totalData = await Prodi.count();
+      let latestProdiId = totalData;
+>>>>>>> dev
 
       const prodi = await Prodi.create({
         id: latestProdiId + 1,
@@ -40,10 +46,9 @@ app
         kode_prodi,
         fakultas_id,
       });
+
       res.status(StatusCodes.CREATED).json({
-        message: `${
-          (prodi.name, prodi.kode_prodi, prodi.fakultas_id)
-        } created successfully`,
+        message: `${prodi.name}, ${prodi.kode_prodi}, ${prodi.fakultas_id} created successfully`,
       });
     } catch (error) {
       console.error("Error:", error);
@@ -53,6 +58,7 @@ app
       });
     }
   })
+
   .put("/", isAdmin, async (req, res) => {
     try {
       const { name, kode_prodi, fakultas_id } = req.body;
