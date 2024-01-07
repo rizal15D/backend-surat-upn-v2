@@ -141,7 +141,7 @@ app
           lokasi: suratUrl,
           jenis: jenis || "",
           deskripsi: deskripsi || "",
-          thumbnail: thumbnailUrl,
+          thumbnail: thumbnailUrl || "",
         });
 
         res
