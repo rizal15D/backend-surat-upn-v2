@@ -18,10 +18,22 @@ app
     );
   })
   .post("/", isAdmin, async function (req, res) {
-    const { name } = req.body;
+    const { name, kode_prodi, fakultas_id } = req.body;
     try {
-      const fakultas_id = await Fakultas.findOne({ where: { id: id } });
+      const fakultas_name = await Fakultas.findOne({
+        where: { id: fakultas_id },
+      });
+
+      if (!fakultas_name) {
+        res.send("fakultas_id not found");
+      }
+
+      const latestProdi = await Prodi.findOne({
+        order: [["createdAt", "DESC"]], // Mengurutkan berdasarkan createdAt secara descending
+      });
+
       const prodi = await Prodi.create({
+        id: latestProdi.id + 1,
         name,
         kode_prodi,
         fakultas_id,
