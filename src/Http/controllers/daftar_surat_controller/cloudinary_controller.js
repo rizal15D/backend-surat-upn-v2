@@ -142,7 +142,9 @@ app
         const { judul, jenis } = req.body;
         const judulExt =
           judul + path.extname(req.files["surat"][0].originalname);
-        const judulCheck = await Daftar_surat.findOne({ where: { judulExt } });
+        // const judulCheck = await Daftar_surat.findOne({
+        //   where: { judul: judulExt },
+        // });
         const jenisExists = await Template_surat.findOne({ where: { jenis } });
 
         if (!jenisExists) {
@@ -155,9 +157,9 @@ app
           where: { id: user.role_id },
         });
 
-        if (judulCheck) {
-          return res.json("judul/file sudah ada");
-        }
+        // if (judulCheck) {
+        //   return res.json("judul/file sudah ada");
+        // }
 
         let suratUrl;
         let thumbnailUrl;

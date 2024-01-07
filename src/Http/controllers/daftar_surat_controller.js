@@ -2,11 +2,11 @@ const express = require("express");
 const app = express.Router();
 const {
   Daftar_surat,
-  Template_surat,
-  Status,
+  Users,
+  Role_user,
   Persetujuan,
+  Prodi,
 } = require("../../models");
-
 const auth = require("../middleware/authMiddleware");
 const cloudinaryController = require("../controllers/daftar_surat_controller/cloudinary_controller");
 
@@ -21,33 +21,36 @@ app
     const role = await Role_user.findOne({
       where: { id: user.role_id },
     });
+
     if (role.id !== 3) {
       //selain prodi
       res.send(await Daftar_surat.findAll());
     } else {
+      const prodi = await Prodi.findOne({
+        where: { id: user.prodi_id },
+      });
       res.send(
-        await Daftar_surat.findOne(
-          {
-            include: {
-              model: Prodi,
-              attributes: ["id as prodi_id"],
+        await Daftar_surat.findAll({
+          include: [
+            {
+              model: Users,
+              as: "user",
+              attributes: ["*"],
+              where: { prodi_id: prodi.id },
+              include: [
+                {
+                  model: Prodi,
+                  as: "prodi",
+                  attributes: ["name"],
+                },
+              ],
             },
-          },
-          { where: { user_id: user.id } }
-        )
+          ],
+        })
       );
     }
   })
 
-  .use(cloudinaryController)
-
-  .put("/:id", (req, res) => {
-    const id = req.params.id;
-    res.send("put hello world2");
-  })
-  .delete("/:id", (req, res) => {
-    const id = req.params.id;
-    res.send("delete hello world2");
-  });
+  .use(cloudinaryController);
 
 module.exports = app;

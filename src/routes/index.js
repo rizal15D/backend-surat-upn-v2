@@ -9,6 +9,8 @@ const authController = require("../Http/controllers/authentication_controller");
 const roleUserController = require("../Http/controllers/role_user_controller");
 const prodiController = require("../Http/controllers/prodi_controller");
 const komentarController = require("../Http/controllers/komentar_controller");
+const fakultasController = require("../Http/controllers/fakultas_controller");
+const periodeController = require("../Http/controllers/periode_controller");
 
 const router = express.Router();
 
@@ -18,10 +20,12 @@ router.use(express.urlencoded({ extended: true }));
 // router.use(cors());
 
 router.use("/auth", authController);
+router.use("/periode", authMiddleware, periodeController);
 router.use("/user", authMiddleware, usersController);
 router.use("/daftar-surat", authMiddleware, daftarSuratController);
-// router.use("/prodi", authMiddleware, prodiController);
+router.use("/prodi", authMiddleware, prodiController);
 router.use("/role-user", authMiddleware, roleUserController);
+router.use("/fakultas", authMiddleware, fakultasController);
 router.use("/template-surat", authMiddleware, templateController);
 router.use("/notifikasi", authMiddleware, notifikasiController);
 router.use("/komentar", authMiddleware, komentarController);

@@ -1,13 +1,14 @@
 const express = require("express");
 const { Role_user } = require("../../models");
 const { StatusCodes } = require("http-status-codes");
+const isAdmin = require("../middleware/adminMiddleware");
 const app = express.Router();
 
 app
   .get("/", async function (req, res) {
     res.send(await Role_user.findAll());
   })
-  .post("/", async function (req, res) {
+  .post("/", isAdmin, async function (req, res) {
     const { name } = req.body;
     try {
       const role_user = await Role_user.create({
@@ -24,7 +25,7 @@ app
       });
     }
   })
-  .put("/", async (req, res) => {
+  .put("/", isAdmin, async (req, res) => {
     try {
       const { name } = req.body;
       const { id } = req.query;
@@ -48,7 +49,7 @@ app
     }
   })
 
-  .delete("/", async (req, res) => {
+  .delete("/", isAdmin, async (req, res) => {
     try {
       const { id } = req.query;
 
