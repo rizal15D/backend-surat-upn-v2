@@ -31,15 +31,19 @@ app
 
       const latestProdi = await Prodi.findAll({
         limit: 1,
-        order: [["createdAt", "DESC"]],
+        order: [["id", "DESC"]],
       });
 
+<<<<<<< HEAD
       let latestProdiId = 0;
 
       if (latestProdi.length > 0) {
         latestProdiId = parseInt(latestProdi[0].id, 10);
       }
       console.log("testing", latestProdiId);
+=======
+      const latestProdiId = parseInt(latestProdi[0].id, 10);
+>>>>>>> dev
 
       const prodi = await Prodi.create({
         id: latestProdiId + 1,

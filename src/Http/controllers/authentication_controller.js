@@ -23,6 +23,11 @@ app
           .status(400)
           .json({ error: "User with this email already exists" });
       }
+      const latestUser = await Users.findAll({
+        limit: 1,
+        order: [["id", "DESC"]],
+      });
+      const latestUserId = parseInt(latestUser[0].id, 10);
 
       // Generate a random password
       const password = crypto.randomBytes(10).toString("hex");
@@ -50,6 +55,7 @@ app
       }
 
       const user = await Users.create({
+        id: latestUserId + 1,
         name,
         email,
         password: hashedPassword,

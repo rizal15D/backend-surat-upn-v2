@@ -11,7 +11,15 @@ app
   .post("/", isAdmin, async function (req, res) {
     const { name } = req.body;
     try {
+      const latestRole = await Role_user.findAll({
+        limit: 1,
+        order: [["id", "DESC"]],
+      });
+
+      const latestRoleId = parseInt(latestRole[0].id, 10);
+
       const role_user = await Role_user.create({
+        id: latestRoleId + 1,
         name,
       });
       res
