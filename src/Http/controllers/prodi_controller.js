@@ -29,30 +29,6 @@ app
         res.send("fakultas_id not found");
       }
 
-<<<<<<< HEAD
-<<<<<<< HEAD
-      const latestProdi = await Prodi.findOne({
-        order: [["createdAt", "DESC"]], // Mengurutkan berdasarkan createdAt secara descending
-      });
-      const latestProdiId = latestProdi.id;
-      console.log(latestProdiId);
-=======
-      const totalData = await Prodi.count();
-      let latestProdiId = totalData;
->>>>>>> dev
-=======
-      const latestProdi = await Prodi.findAll({
-        limit: 1,
-        order: [["createdAt", "DESC"]],
-      });
-
-      let latestProdiId = 0;
-
-      if (latestProdi.length > 0) {
-        latestProdiId = parseInt(latestProdi[0].id, 10);
-      }
->>>>>>> dev
-
       const prodi = await Prodi.create({
         id: latestProdiId + 1,
         name,
