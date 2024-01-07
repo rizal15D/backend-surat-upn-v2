@@ -39,6 +39,7 @@ app
       if (latestProdi.length > 0) {
         latestProdiId = parseInt(latestProdi[0].id, 10);
       }
+      console.log("testing", latestProdiId);
 
       const prodi = await Prodi.create({
         id: latestProdiId + 1,
