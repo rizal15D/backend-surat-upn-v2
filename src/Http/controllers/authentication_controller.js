@@ -59,7 +59,7 @@ app
         aktif: true,
       });
       const token = jwt.sign({ id: user.id, aktif: user.aktif }, secretKey, {
-        expiresIn: "2h",
+        expiresIn: "24h",
       });
       res
         .status(StatusCodes.CREATED)
@@ -77,7 +77,7 @@ app
       const user = await Users.findOne({ where: { email: req.body.email } });
       if (user && (await bcrypt.compare(req.body.password, user.password))) {
         const token = jwt.sign({ id: user.id, aktif: user.aktif }, secretKey, {
-          expiresIn: "1h",
+          expiresIn: "24h",
         });
         res.json({
           message: "Login Berhasil",

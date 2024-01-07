@@ -31,9 +31,11 @@ app
       const latestProdi = await Prodi.findOne({
         order: [["createdAt", "DESC"]], // Mengurutkan berdasarkan createdAt secara descending
       });
+      const latestProdiId = latestProdi.id;
+      console.log(latestProdiId);
 
       const prodi = await Prodi.create({
-        id: latestProdi.id + 1,
+        id: latestProdiId + 1,
         name,
         kode_prodi,
         fakultas_id,
