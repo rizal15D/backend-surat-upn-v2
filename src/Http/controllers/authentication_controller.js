@@ -13,7 +13,7 @@ const environment = "development";
 const secretKey = config[environment].secret_key;
 
 app
-  .post("/register", isAdmin, async (req, res) => {
+  .post("/register", authMiddleware, isAdmin, async (req, res) => {
     try {
       const { name, email, role_id, prodi_id, fakultas_id } = req.body;
 
