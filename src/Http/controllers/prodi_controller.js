@@ -29,8 +29,16 @@ app
         res.send("fakultas_id not found");
       }
 
-      const totalData = await Prodi.count();
-      let latestProdiId = totalData;
+      const latestProdi = await Prodi.findAll({
+        limit: 1,
+        order: [["createdAt", "DESC"]],
+      });
+
+      let latestProdiId = 0;
+
+      if (latestProdi.length > 0) {
+        latestProdiId = parseInt(latestProdi[0].id, 10);
+      }
 
       const prodi = await Prodi.create({
         id: latestProdiId + 1,
