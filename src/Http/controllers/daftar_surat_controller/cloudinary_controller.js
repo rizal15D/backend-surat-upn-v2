@@ -87,27 +87,35 @@ app
         where: { id: user.role_id },
       });
 
-      const status = getStatus(role.id, true);
+      const statusArray = getStatus(role.id, true);
+      const status = statusArray.join(', ');
 
-      const [affectedRowsCount, affectedRows] = await Daftar_surat.update(
-        {
-          dibaca: true,
-          status,
-        },
-        {
-          where: { id: daftar_surat_id },
-          returning: true,
-        }
-      );
+      const surat = await Daftar_surat.findOne({
+        where: { id: daftar_surat_id },
+      });
 
-      if (affectedRowsCount === 0) {
+      if (!surat) {
         return res.status(StatusCodes.NOT_FOUND).json({
           error: "Daftar surat not found",
         });
       }
 
-      const updatedSurat = affectedRows[0];
-      res.status(StatusCodes.OK).json({ surat: updatedSurat });
+      if (!surat.dibaca) {
+        const [affectedRowsCount, affectedRows] = await Daftar_surat.update(
+          {
+            dibaca: true,
+            status,
+          },
+          {
+            where: { id: daftar_surat_id },
+            returning: true,
+          }
+        );
+
+        surat = affectedRows[0];
+      }
+
+      res.status(StatusCodes.OK).json({ surat: surat});
     } catch (error) {
       console.error("Error:", error);
       res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
@@ -188,7 +196,8 @@ app
             .end(req.files.thumbnail[0].buffer);
         });
 
-        const status = getStatus(role.id);
+        const status = getStatus(role.id, false, null);
+        const statusString = status.join(', '); // Convert array to string
         const daftar_surat = await Daftar_surat.create({
           pin: 0,
           dibaca: 0,
@@ -197,7 +206,7 @@ app
           jenis,
           user_id: req.user.id,
           tanggal: Date(),
-          status: status,
+          status: statusString,
           lokasi_surat: suratUrl,
           persetujuan: "",
           komentar_id: null,
