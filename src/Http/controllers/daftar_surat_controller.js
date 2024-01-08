@@ -1,11 +1,6 @@
 const express = require("express");
 const app = express.Router();
-const {
-  Daftar_surat,
-  Users,
-  Role_user,
-  Prodi,
-} = require("../../models");
+const { Daftar_surat, Users, Role_user, Prodi } = require("../../models");
 const auth = require("../middleware/authMiddleware");
 const cloudinaryController = require("../controllers/daftar_surat_controller/cloudinary_controller");
 const { StatusCodes } = require("http-status-codes");
@@ -144,6 +139,31 @@ app
         error: "Internal Server Error",
       });
     }
+
+  .put("/status", async (req, res) => {
+    const { id } = req.query;
+    const { status, persetujuan } = req.body;
+    let setStatus;
+    const surat = Daftar_surat.findOne({
+      where: { id },
+    });
+
+    const user = await Users.findOne({
+      where: { id: req.user.id },
+    });
+    const role = await Role_user.findOne({
+      where: { id: user.role_id },
+    });
+
+    if (persetujuan) {
+      setStatus = getStatus(role.id, status, persetujuan);
+    } else {
+      setStatus = getStatus(role.id, status);
+    }
+
+    surat.status = setStatus;
+
+    await surat.save();
   })
 
   .use(cloudinaryController);

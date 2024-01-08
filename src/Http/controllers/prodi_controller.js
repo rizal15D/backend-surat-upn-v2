@@ -62,13 +62,17 @@ app
       const { name, kode_prodi, fakultas_id } = req.body;
       const { id } = req.query;
       if (!id) {
-        return res.status(400).json({ error: "Invalid params" });
+        return res
+          .status(StatusCodes.BAD_REQUEST)
+          .json({ error: "Invalid params" });
       }
 
       const prodi = await Prodi.findOne({ where: { id: id } });
 
       if (!prodi) {
-        return res.status(404).json({ error: "Prodi not found" });
+        return res
+          .status(StatusCodes.NOT_FOUND)
+          .json({ error: "Prodi not found" });
       }
 
       prodi.name = name;
@@ -77,14 +81,16 @@ app
 
       await prodi.save();
 
-      res.json({
+      res.status(StatusCodes.OK).json({
         updated: prodi.name,
         kode_prodi,
         fakultas_id,
       });
     } catch (error) {
       console.error("Error:", error);
-      res.status(500).json({ error: "Internal Server Error" });
+      res
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({ error: "Internal Server Error" });
     }
   })
 
