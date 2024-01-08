@@ -7,6 +7,7 @@ const crypto = require("crypto");
 const isAdmin = require("../middleware/adminMiddleware");
 const authMiddleware = require("../middleware/authMiddleware.js");
 const express = require("express");
+// const { error } = require("console");
 const app = express.Router();
 
 const environment = "development";
@@ -20,9 +21,10 @@ app
       const existingUser = await Users.findOne({ where: { email } });
       if (existingUser) {
         return res
-          .status(400)
+          .status(StatusCodes.BAD_REQUEST)
           .json({ error: "User with this email already exists" });
       }
+      // add user by index
       const latestUser = await Users.findAll({
         limit: 1,
         order: [["id", "DESC"]],
@@ -32,26 +34,47 @@ app
       // Generate a random password
       const password = crypto.randomBytes(10).toString("hex");
       const hashedPassword = await bcrypt.hash(password, 10);
+
       const role_user = await Role_user.findOne({
         where: { id: role_id },
       });
-      const prodi_user = await Prodi.findOne({
-        where: { id: prodi_id },
-        attributes: [
-          "id",
-          "name",
-          "kode_prodi",
-          "fakultas_id",
-          "createdAt",
-          "updatedAt",
-        ],
-      });
-      if (role_user.name === "Prodi" && prodi_user.name === "-") {
-        res.send("Please, Input the prodi Id");
+      if (!role_user) {
+        return res
+          .status(StatusCodes.BAD_REQUEST)
+          .json({ error: "No such role_user exists" });
       }
 
-      if (!role_user) {
-        return res.status(400).json({ error: "No such role_user exists" });
+      const prodi_user = await Prodi.findOne({
+        where: { id: prodi_id },
+      });
+      if (!prodi_user) {
+        return res
+          .status(StatusCodes.BAD_REQUEST)
+          .json({ error: "No such prodi_user exists" });
+      }
+
+      const fakultas_user = await Fakultas.findOne({
+        where: { id: fakultas_id },
+      });
+      if (!fakultas_user) {
+        return res
+          .status(StatusCodes.BAD_REQUEST)
+          .json({ error: "No such fakultas_user exists" });
+      }
+
+      if (role_id != 3) {
+        if (prodi_id != 1) {
+          return res
+            .status(StatusCodes.BAD_REQUEST)
+            .json({ error: "Not Prodi, Change Prodi to 1" });
+        }
+      }
+      if (role_id == 3) {
+        if (prodi_id == 1) {
+          return res
+            .status(StatusCodes.BAD_REQUEST)
+            .json({ error: "Prodi have to had prodi, Select other than 1" });
+        }
       }
 
       const user = await Users.create({
@@ -61,7 +84,7 @@ app
         password: hashedPassword,
         role_id: role_user.id,
         prodi_id: prodi_user.id,
-        fakultas_id,
+        fakultas_id: fakultas_user.id,
         aktif: true,
       });
       // const token = jwt.sign({ id: user.id, aktif: user.aktif }, secretKey, {
@@ -80,29 +103,72 @@ app
 
   .post("/login", async (req, res) => {
     try {
-      const user = await Users.findOne({ where: { email: req.body.email } });
+      const user = await Users.findOne({
+        where: { email: req.body.email },
+      });
       if (user && !user.aktif) {
-        return res.status(401).json({ error: "User is not active" });
+        return res
+          .status(StatusCodes.UNAUTHORIZED)
+          .json({ error: "User is not active" });
       }
       if (user && (await bcrypt.compare(req.body.password, user.password))) {
         const token = jwt.sign({ id: user.id, aktif: user.aktif }, secretKey, {
-          expiresIn: "24h",
+          expiresIn: "1d",
+        });
+        const user_response = await Users.findOne({
+          include: [
+            {
+              model: Prodi,
+              as: "prodi",
+              attributes: {
+                exclude: [
+                  "kode_prodi",
+                  "fakultas_id",
+                  "createdAt",
+                  "updatedAt",
+                ],
+              },
+            },
+            {
+              model: Role_user,
+              as: "role",
+              attributes: { exclude: ["createdAt", "updatedAt"] },
+            },
+            {
+              model: Fakultas,
+              as: "fakultas",
+              attributes: {
+                exclude: ["jenjang", "kode_fakultas", "createdAt", "updatedAt"],
+              },
+            },
+          ],
+          attributes: {
+            exclude: [
+              "password",
+              "role_id",
+              "prodi_id",
+              "fakultas_id",
+              "createdAt",
+              "updatedAt",
+            ],
+          },
+          where: { email: req.body.email },
         });
         res.json({
           message: "Login Berhasil",
           token,
-          user: {
-            id: user.id,
-            name: user.name,
-            role_id: user.role_id,
-            prodi_id: user.prodi_id,
-          },
+          user_response,
         });
       } else {
-        res.status(401).json({ error: "Invalid login credentials" });
+        res
+          .status(StatusCodes.UNAUTHORIZED)
+          .json({ error: "Invalid login credentials" });
       }
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      console.log("Error:", error);
+      res
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({ error: error.message });
     }
   })
 
@@ -114,7 +180,7 @@ app
       }
       const password = crypto.randomBytes(10).toString("hex");
       const hashedPassword = await bcrypt.hash(password, 10);
-      const [updated] = await Users.update(
+      const updated = await Users.update(
         { password: hashedPassword },
         {
           where: { id: id },
@@ -124,10 +190,12 @@ app
       if (updated) {
         res.json({ message: "Password reset successfully", password });
       } else {
-        res.status(404).json({ error: "User not found" });
+        res.status(StatusCodes.NOT_FOUND).json({ error: "User not found" });
       }
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      res
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({ error: error.message });
     }
   })
 
@@ -151,10 +219,12 @@ app
           : "User deactivated successfully";
         res.json({ message });
       } else {
-        res.status(404).json({ error: "User not found" });
+        res.status(StatusCodes.NOT_FOUND).json({ error: "User not found" });
       }
     } catch (error) {
-      res.status(500).json({ error: error.message });
+      res
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({ error: error.message });
     }
   });
 

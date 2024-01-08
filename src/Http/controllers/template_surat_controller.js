@@ -8,25 +8,24 @@ const { Template_surat } = require("../../models");
 const app = express.Router();
 
 app
-  .get("/download/", async function (req, res) {
-    const { id } = req.query;
-    if (!id) {
-      return res.status(400).json({ error: "Invalid params" });
-    }
+  // .get("/download", async function (req, res) {
+  //   const { id } = req.query;
+  //   if (!id) {
+  //     return res.status(400).json({ error: "Invalid params" });
+  //   }
 
-    const template_surat = await Template_surat.findOne({ where: { id: id } });
+  //   const template_surat = await Template_surat.findOne({ where: { id: id } });
 
-    if (!template_surat) {
-      return res.status(404).json({ error: "Template Surat not found" });
-    }
-    res.download(path.join(template_surat.lokasi, template_surat.judul));
-  })
+  //   if (!template_surat) {
+  //     return res.status(404).json({ error: "Template Surat not found" });
+  //   }
+  //   res.download(path.join(template_surat.lokasi, template_surat.judul));
+  // })
 
   .get("/", async function (req, res) {
     res.send(
       await Template_surat.findAll({
-        attributes: { exclude: ["lokasi", "thumnail", "deskripsi"] },
-        order: [["id", "ASC"]]
+        order: [["id", "ASC"]],
       })
     );
   })

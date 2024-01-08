@@ -6,14 +6,14 @@ const app = express.Router();
 
 app
   .get("/", async function (req, res) {
-    res.send(await Periode.findAll({ order: [["id", "ASC"]]}));
+    res.send(await Periode.findAll({ order: [["id", "ASC"]] }));
   })
   .post("/", isAdmin, async function (req, res) {
-    const { tahun, semester } = req.body;
+    const { tahun, semester, prodi_id } = req.body;
     try {
-      const prodi_id = Prodi.findOne({ where: { id: prodi_id } });
-      if (prodi_id) {
-        res.send("Prodi not found");
+      const prodi_periode = Prodi.findOne({ where: { id: prodi_id } });
+      if (!prodi_periode) {
+        res.json("Prodi not found");
       }
       const periode = await Periode.create({
         tahun,
@@ -22,9 +22,8 @@ app
         status: true,
       });
       res.status(StatusCodes.CREATED).json({
-        message: `${
-          (periode.tahun, periode.semester, periode.prodi_id, periode.status)
-        } created successfully`,
+        message: `created successfully`,
+        periode,
       });
     } catch (error) {
       console.error("Error:", error);
@@ -36,34 +35,50 @@ app
   })
   .put("/", isAdmin, async (req, res) => {
     try {
-      const { tahun, status, semester } = req.body;
+      const { tahun, status, semester, prodi_id } = req.body;
       const { id } = req.query;
       if (!id) {
-        return res.status(400).json({ error: "Invalid params" });
+        return res
+          .status(StatusCodes.BAD_REQUEST)
+          .json({ error: "Invalid params" });
       }
 
-      const periode = await Periode.findOne({ where: { id: id } });
+      const data_periode = await Periode.findOne({ where: { id: id } });
 
-      if (!periode) {
-        return res.status(404).json({ error: "Prodi not found" });
+      if (!data_periode) {
+        return res
+          .status(StatusCodes.NOT_FOUND)
+          .json({ error: "Periode not found" });
       }
 
-      periode.tahun = tahun;
-      periode.semester = semester;
-      periode.prodi_id = prodi_id;
-      periode.status = status;
+      // periode.tahun = tahun;
+      // periode.semester = semester;
+      // periode.prodi_id = prodi_id;
+      // periode.status = status;
 
-      await periode.save();
+      // await periode.save();
+
+      const periode = await Periode.update(
+        {
+          tahun,
+          semester,
+          prodi_id,
+          status,
+        },
+        {
+          where: { id: id }, // Gantilah dengan kriteria yang sesuai
+          returning: true, // Menambahkan opsi returning
+        }
+      );
 
       res.json({
-        updated: periode.tahun,
-        semester,
-        prodi_id,
-        status,
+        updated: periode,
       });
     } catch (error) {
       console.error("Error:", error);
-      res.status(500).json({ error: "Internal Server Error" });
+      res
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({ error: "Internal Server Error" });
     }
   })
 
@@ -72,7 +87,9 @@ app
       const { id } = req.query;
 
       if (!id) {
-        return res.status(400).json({ error: "Parameter id is required" });
+        return res
+          .status(StatusCodes.BAD_REQUEST)
+          .json({ error: "Parameter id is required" });
       }
 
       const deletedPeriode = await Periode.destroy({
@@ -80,13 +97,15 @@ app
       });
 
       if (deletedPeriode) {
-        res.status(200).json({ message: "Periode deleted successfully" });
+        res.status(OK).json({ message: "Periode deleted successfully" });
       } else {
-        res.status(404).json({ error: "Periode not found" });
+        res.status(StatusCodes.NOT_FOUND).json({ error: "Periode not found" });
       }
     } catch (error) {
       console.error("Error:", error);
-      res.status(500).json({ error: "Internal Server Error" });
+      res
+        .status(StatusCodes.INTERNAL_SERVER_ERROR)
+        .json({ error: "Internal Server Error" });
     }
   });
 
