@@ -47,7 +47,7 @@ module.exports = {
     host: process.env.POSTGRES_HOST,
     username: stringUser,
     password: stringPassword,
-    // database: process.env.POSTGRES_DATABASE,
+    database: process.env.POSTGRES_DATABASE,
     // username: process.env.DB_USERNAME,
     // password: process.env.DB_PASSWORD,
     // database: process.env.DB_NAME,
