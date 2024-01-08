@@ -6,11 +6,6 @@ const { StatusCodes } = require("http-status-codes");
 const { Template_surat } = require("../../models");
 // const isAdmin = require("../middleware/adminMiddleware");
 const app = express.Router();
-// const { google } = require('googleapis');
-// const drive = google.drive('v3');
-// const key = require('./path-to-your-service-account-key.json');
-// const upload = multer({ storage: multer.memoryStorage() });
-// const upload = multer();
 
 app
   .get("/download/", async function (req, res) {
@@ -31,6 +26,7 @@ app
     res.send(
       await Template_surat.findAll({
         attributes: { exclude: ["lokasi", "thumnail", "deskripsi"] },
+        order: [["id", "ASC"]]
       })
     );
   })

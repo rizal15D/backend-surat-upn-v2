@@ -14,6 +14,7 @@ app
             [Op.ne]: 1, // Menghindari data dengan id 1
           },
         },
+        order: [["id", "ASC"]],
       })
     );
   })
@@ -44,7 +45,8 @@ app
       });
 
       res.status(StatusCodes.CREATED).json({
-        message: `${prodi.name}, ${prodi.kode_prodi}, ${prodi.fakultas_id} created successfully`,
+        message: 'created successfully',
+        prodi,
       });
     } catch (error) {
       console.error("Error:", error);
