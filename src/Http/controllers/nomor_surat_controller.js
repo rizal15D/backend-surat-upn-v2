@@ -17,8 +17,7 @@ app.post("/", async (req, res) => {
     let nomor;
     let nomor_surat;
 
-    nomor = await Nomor_surat.findAll({
-      limit: 1,
+    nomor = await Nomor_surat.findOne({
       order: [["id", "DESC"]],
     });
 
