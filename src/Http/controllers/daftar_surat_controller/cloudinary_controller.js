@@ -87,27 +87,35 @@ app
         where: { id: user.role_id },
       });
 
-      const status = getStatus(role.id, true);
+      const statusArray = getStatus(role.id, true);
+      const status = statusArray.join(', ');
 
-      const [affectedRowsCount, affectedRows] = await Daftar_surat.update(
-        {
-          dibaca: true,
-          status,
-        },
-        {
-          where: { id: daftar_surat_id },
-          returning: true,
-        }
-      );
+      const surat = await Daftar_surat.findOne({
+        where: { id: daftar_surat_id },
+      });
 
-      if (affectedRowsCount === 0) {
+      if (!surat) {
         return res.status(StatusCodes.NOT_FOUND).json({
           error: "Daftar surat not found",
         });
       }
 
-      const updatedSurat = affectedRows[0];
-      res.status(StatusCodes.OK).json({ surat: updatedSurat });
+      if (!surat.dibaca) {
+        const [affectedRowsCount, affectedRows] = await Daftar_surat.update(
+          {
+            dibaca: true,
+            status,
+          },
+          {
+            where: { id: daftar_surat_id },
+            returning: true,
+          }
+        );
+
+        surat = affectedRows[0];
+      }
+
+      res.status(StatusCodes.OK).json({ surat: surat});
     } catch (error) {
       console.error("Error:", error);
       res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({

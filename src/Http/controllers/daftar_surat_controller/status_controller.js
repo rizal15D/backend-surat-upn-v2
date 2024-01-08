@@ -25,41 +25,38 @@
 
 // const status = getStatus(role_user, isRead);
 // bisa dibuat seperti perulangan aggar lebih efisien/fleksibel
-function getStatus(role_user, isRead, persetujuan) {
-  if (role_user == 3) {
-    return "didaftar tunggu tu";
-  }
-  if (role_user == 2 && !isRead) {
-    return "didaftar tunggu tu";
-  } else if (role_user == 2 && isRead) {
-    return "dibaca tu";
-  } else if (role_user == 2 && isRead && persetujuan) {
-    return "disetujui tu";
-  } else if (role_user == 2 && isRead && !persetujuan) {
-    return "ditolak tu";
-  }
-  if (role_user == 4 && !isRead) {
-    return "didaftar tunggu dekan";
-  } else if (role_user == 4 && isRead) {
-    return "dibaca dekan";
-  } else if (role_user == 4 && isRead && persetujuan) {
-    return "disetujui dekan";
-  } else if (role_user == 4 && isRead && !persetujuan) {
-    return "ditolak dekan";
-  }
-}
-
-// function getStatus(role_user) {
-//   console.log(role_user);
-//   if (role_user == 2) {
-//     return "didaftar tunggu tu";
-//   }
+// function getStatus(role_user, isRead, persetujuan) {
 //   if (role_user == 3) {
 //     return "didaftar tunggu tu";
 //   }
-//   if (role_user == 4) {
+//   if (role_user == 2 && !isRead) {
+//     return "didaftar tunggu tu";
+//   } else if (role_user == 2 && isRead) {
+//     return "dibaca tu";
+//   } else if (role_user == 2 && isRead && persetujuan) {
+//     return "disetujui tu";
+//   } else if (role_user == 2 && isRead && !persetujuan) {
+//     return "ditolak tu";
+//   }
+//   if (role_user == 4 && !isRead) {
 //     return "didaftar tunggu dekan";
+//   } else if (role_user == 4 && isRead) {
+//     return "dibaca dekan";
+//   } else if (role_user == 4 && isRead && persetujuan) {
+//     return "disetujui dekan";
+//   } else if (role_user == 4 && isRead && !persetujuan) {
+//     return "ditolak dekan";
 //   }
 // }
+
+function getStatus(role_user, isRead, persetujuan) {
+  const statusMap = {
+    3: ["didaftar tunggu tu"],
+    2: !isRead ? ["didaftar tunggu tu"] : ["dibaca tu"],
+    4: !isRead ? ["didaftar tunggu dekan"] : ["dibaca dekan"]
+  };
+
+  return statusMap[role_user] || [];
+}
 
 module.exports = getStatus;
