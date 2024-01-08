@@ -64,12 +64,12 @@ app
         fakultas_id,
         aktif: true,
       });
-      const token = jwt.sign({ id: user.id, aktif: user.aktif }, secretKey, {
-        expiresIn: "24h",
-      });
+      // const token = jwt.sign({ id: user.id, aktif: user.aktif }, secretKey, {
+      //   expiresIn: "24h",
+      // });
       res
         .status(StatusCodes.CREATED)
-        .json({ message: "User created successfully", token, password });
+        .json({ message: "User created successfully", password });
     } catch (error) {
       console.error("Error:", error);
       res
