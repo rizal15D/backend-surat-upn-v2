@@ -1,11 +1,6 @@
 const express = require("express");
 const app = express.Router();
-const {
-  Daftar_surat,
-  Users,
-  Role_user,
-  Prodi,
-} = require("../../models");
+const { Daftar_surat, Users, Role_user, Prodi } = require("../../models");
 const auth = require("../middleware/authMiddleware");
 const cloudinaryController = require("../controllers/daftar_surat_controller/cloudinary_controller");
 const getStatus = require("./daftar_surat_controller/status_controller");
@@ -17,7 +12,7 @@ app
   .get("/", async function (req, res) {
     const user = await Users.findOne({
       where: { id: req.user.id },
-      order: [["id", "ASC"]]
+      // order: [["id", "ASC"]],
     });
     const role = await Role_user.findOne({
       where: { id: user.role_id },
@@ -25,7 +20,24 @@ app
 
     if (role.id !== 3) {
       //selain prodi
-      res.send(await Daftar_surat.findAll());
+      res.send(
+        await Daftar_surat.findAll({
+          include: [
+            {
+              model: Users,
+              as: "user",
+              attributes: ["*"],
+              include: [
+                {
+                  model: Prodi,
+                  as: "prodi",
+                  attributes: ["name"],
+                },
+              ],
+            },
+          ],
+        })
+      );
     } else {
       const prodi = await Prodi.findOne({
         where: { id: user.prodi_id },
