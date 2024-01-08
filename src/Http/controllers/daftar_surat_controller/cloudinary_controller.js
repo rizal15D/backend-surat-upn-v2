@@ -99,7 +99,7 @@ app
           error: "Daftar surat not found",
         });
       }
-
+      
       if (!surat.dibaca) {
         const [affectedRowsCount, affectedRows] = await Daftar_surat.update(
           {

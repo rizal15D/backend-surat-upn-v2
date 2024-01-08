@@ -56,7 +56,19 @@ function getStatus(role_user, isRead, persetujuan) {
     4: !isRead ? ["didaftar tunggu dekan"] : ["dibaca dekan"]
   };
 
-  return statusMap[role_user] || [];
+  const updatedStatusMap = { ...statusMap }; // Create a copy of statusMap
+
+  if (persetujuan) {
+    if (persetujuan.includes('setuju')) {
+      updatedStatusMap[2] = ["disetujui tu"];
+      updatedStatusMap[4] = ["disetujui dekan"];
+    } else if (persetujuan.includes('tolak')) {
+      updatedStatusMap[2] = ["ditolak tu"];
+      updatedStatusMap[4] = ["ditolak dekan"];
+    }
+  }
+
+  return updatedStatusMap[role_user] || [];
 }
 
 module.exports = getStatus;
