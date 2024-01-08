@@ -64,12 +64,12 @@ app
         fakultas_id,
         aktif: true,
       });
-      const token = jwt.sign({ id: user.id, aktif: user.aktif }, secretKey, {
-        expiresIn: "24h",
-      });
+      // const token = jwt.sign({ id: user.id, aktif: user.aktif }, secretKey, {
+      //   expiresIn: "24h",
+      // });
       res
         .status(StatusCodes.CREATED)
-        .json({ message: "User created successfully", token, password });
+        .json({ message: "User created successfully", password });
     } catch (error) {
       console.error("Error:", error);
       res
@@ -81,6 +81,9 @@ app
   .post("/login", async (req, res) => {
     try {
       const user = await Users.findOne({ where: { email: req.body.email } });
+      if (user && !user.aktif) {
+        return res.status(401).json({ error: "User is not active" });
+      }
       if (user && (await bcrypt.compare(req.body.password, user.password))) {
         const token = jwt.sign({ id: user.id, aktif: user.aktif }, secretKey, {
           expiresIn: "24h",
@@ -130,7 +133,8 @@ app
 
   .put("/aktivasi", authMiddleware, isAdmin, async (req, res) => {
     try {
-      const { id, aktif } = req.body;
+      const { aktif } = req.body;
+      const { id } = req.query;
       if (id == 1) {
         return res.json("Error : The User is Admin");
       }

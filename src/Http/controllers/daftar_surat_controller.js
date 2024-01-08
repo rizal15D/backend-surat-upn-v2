@@ -4,7 +4,6 @@ const {
   Daftar_surat,
   Users,
   Role_user,
-  Persetujuan,
   Prodi,
 } = require("../../models");
 const auth = require("../middleware/authMiddleware");
@@ -18,6 +17,7 @@ app
   .get("/", async function (req, res) {
     const user = await Users.findOne({
       where: { id: req.user.id },
+      order: [["id", "ASC"]]
     });
     const role = await Role_user.findOne({
       where: { id: user.role_id },

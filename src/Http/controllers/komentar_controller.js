@@ -5,7 +5,9 @@ const app = express.Router();
 
 app
   .get("/", async function (req, res) {
-    res.send(await Komentar.findAll());
+    res.send(await Komentar.findAll(
+      {order: [["id", "ASC"]]}
+    ));
   })
 
   .get("/", async function (req, res) {

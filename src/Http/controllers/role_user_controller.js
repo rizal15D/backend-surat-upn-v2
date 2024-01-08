@@ -6,7 +6,9 @@ const app = express.Router();
 
 app
   .get("/", async function (req, res) {
-    res.send(await Role_user.findAll());
+    res.send(await Role_user.findAll(
+      {order: [["id", "ASC"]]}
+    ));
   })
   .post("/", isAdmin, async function (req, res) {
     const { name } = req.body;
