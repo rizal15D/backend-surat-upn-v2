@@ -230,10 +230,13 @@ app
               .end(req.files.thumbnail[0].buffer);
           });
         }
+
         const data_template_surat = await Template_surat.findOne({
           where: { id },
         });
-
+        if (!data_template_surat) {
+          return res.status(404).json({ error: "Template surat not found" });
+        }
         const template_surat = await Template_surat.update(
           {
             judul: judul || data_template_surat.judul,

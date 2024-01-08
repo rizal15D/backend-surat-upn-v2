@@ -149,44 +149,50 @@ app
         let suratUrl;
         let thumbnailUrl;
 
-        await new Promise((resolve, reject) => {
-          cloudinary.uploader
-            .upload_stream(
-              {
-                resource_type: getResourceType(req.files.surat[0].originalname),
-                public_id: path.parse(req.files.surat[0].originalname),
-              },
-              (error, result) => {
-                if (error) reject(error);
-                else {
-                  suratUrl = result.url;
-                  resolve(result);
+        if (req.files["surat"]) {
+          await new Promise((resolve, reject) => {
+            cloudinary.uploader
+              .upload_stream(
+                {
+                  resource_type: getResourceType(
+                    req.files.surat[0].originalname
+                  ),
+                  public_id: path.parse(req.files.surat[0].originalname),
+                },
+                (error, result) => {
+                  if (error) reject(error);
+                  else {
+                    suratUrl = result.url;
+                    resolve(result);
+                  }
                 }
-              }
-            )
-            .end(req.files.surat[0].buffer);
-        });
+              )
+              .end(req.files.surat[0].buffer);
+          });
+        }
 
         // Upload thumbnail to Cloudinary
-        await new Promise((resolve, reject) => {
-          cloudinary.uploader
-            .upload_stream(
-              {
-                resource_type: getResourceType(
-                  req.files.thumbnail[0].originalname
-                ),
-                public_id: path.parse(req.files.thumbnail[0].originalname),
-              },
-              (error, result) => {
-                if (error) reject(error);
-                else {
-                  thumbnailUrl = result.url;
-                  resolve(result);
+        if (req.files["thumbnail"]) {
+          await new Promise((resolve, reject) => {
+            cloudinary.uploader
+              .upload_stream(
+                {
+                  resource_type: getResourceType(
+                    req.files.thumbnail[0].originalname
+                  ),
+                  public_id: path.parse(req.files.thumbnail[0].originalname),
+                },
+                (error, result) => {
+                  if (error) reject(error);
+                  else {
+                    thumbnailUrl = result.url;
+                    resolve(result);
+                  }
                 }
-              }
-            )
-            .end(req.files.thumbnail[0].buffer);
-        });
+              )
+              .end(req.files.thumbnail[0].buffer);
+          });
+        }
 
         const status = getStatus(role.id);
         const daftar_surat = await Daftar_surat.create({

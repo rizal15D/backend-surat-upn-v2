@@ -6,9 +6,7 @@ const app = express.Router();
 
 app
   .get("/", async function (req, res) {
-    res.send(await Role_user.findAll(
-      {order: [["id", "ASC"]]}
-    ));
+    res.send(await Role_user.findAll({ order: [["id", "ASC"]] }));
   })
   .post("/", isAdmin, async function (req, res) {
     const { name } = req.body;
@@ -52,7 +50,7 @@ app
       role.name = name;
       await role.save();
 
-      res.json({ updatedName: role.name + "success update" });
+      res.json({ updatedName: role.name + " success update" });
     } catch (error) {
       console.error("Error:", error);
       res.status(500).json({ error: "Internal Server Error" });

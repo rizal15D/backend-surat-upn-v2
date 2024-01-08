@@ -45,7 +45,7 @@ app
       });
 
       res.status(StatusCodes.CREATED).json({
-        message: 'created successfully',
+        message: "created successfully",
         prodi,
       });
     } catch (error) {
@@ -82,6 +82,7 @@ app
       await prodi.save();
 
       res.status(StatusCodes.OK).json({
+        message: "success update",
         updated: prodi.name,
         kode_prodi,
         fakultas_id,

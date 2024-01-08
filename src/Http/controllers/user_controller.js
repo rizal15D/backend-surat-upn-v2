@@ -1,5 +1,6 @@
 const express = require("express");
 const { Users, Role_user, Fakultas, Prodi } = require("../../models");
+const { StatusCodes } = require("http-status-codes");
 const isAdmin = require("../middleware/adminMiddleware");
 const bcrypt = require("bcryptjs");
 const crypto = require("crypto");
@@ -74,8 +75,10 @@ app.put("/password", async (req, res) => {
       }
     );
 
+    const user = await Users.findOne({ where: { id: req.user.id } });
+
     if (updated) {
-      res.json({ message: "Password updated successfully" });
+      res.json({ message: `${user.email} Password updated successfully` });
     } else {
       res.status(404).json({ error: "User not found" });
     }
@@ -86,6 +89,9 @@ app.put("/password", async (req, res) => {
 
 app.delete("/", isAdmin, async (req, res) => {
   try {
+    if (req.query.id == 1) {
+      return res.status(Stat);
+    }
     const deleted = await Users.destroy({
       where: { id: req.query.id },
     });
