@@ -24,7 +24,7 @@
 // const isRead = daftar_surat.dibaca === 1; // Assuming the Daftar_surat model has a dibaca field
 
 // const status = getStatus(role_user, isRead);
-
+// bisa dibuat seperti perulangan aggar lebih efisien/fleksibel
 function getStatus(role_user, isRead, persetujuan) {
   if (role_user == 3) {
     return "didaftar tunggu tu";

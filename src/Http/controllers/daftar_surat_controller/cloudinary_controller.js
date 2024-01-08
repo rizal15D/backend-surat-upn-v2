@@ -116,21 +116,6 @@ app
     }
   })
 
-  .get("/", async (req, res) => {
-    try {
-      const distinctJenis = await Template_surat.findAll({
-        attributes: [
-          [Sequelize.fn("DISTINCT", Sequelize.col("jenis")), "jenis"],
-        ],
-      });
-
-      res.json(distinctJenis);
-    } catch (error) {
-      console.error("Error:", error);
-      res.status(500).json({ error: "Internal Server Error" });
-    }
-  })
-
   .post(
     "/upload/cloudinary/v2",
     upload.fields([

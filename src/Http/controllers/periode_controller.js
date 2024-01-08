@@ -6,7 +6,7 @@ const app = express.Router();
 
 app
   .get("/", async function (req, res) {
-    res.send(await Periode.findAll());
+    res.send(await Periode.findAll({ order: [["id", "ASC"]]}));
   })
   .post("/", isAdmin, async function (req, res) {
     const { tahun, semester } = req.body;
