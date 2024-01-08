@@ -3,6 +3,7 @@ const app = express.Router();
 const { Daftar_surat, Users, Role_user, Prodi } = require("../../models");
 const auth = require("../middleware/authMiddleware");
 const cloudinaryController = require("../controllers/daftar_surat_controller/cloudinary_controller");
+const { StatusCodes } = require("http-status-codes");
 const getStatus = require("./daftar_surat_controller/status_controller");
 
 app.use(express.json());
@@ -12,7 +13,6 @@ app
   .get("/", async function (req, res) {
     const user = await Users.findOne({
       where: { id: req.user.id },
-      // order: [["id", "ASC"]],
     });
     const role = await Role_user.findOne({
       where: { id: user.role_id },
@@ -20,24 +20,7 @@ app
 
     if (role.id !== 3) {
       //selain prodi
-      res.send(
-        await Daftar_surat.findAll({
-          include: [
-            {
-              model: Users,
-              as: "user",
-              attributes: ["*"],
-              include: [
-                {
-                  model: Prodi,
-                  as: "prodi",
-                  attributes: ["name"],
-                },
-              ],
-            },
-          ],
-        })
-      );
+      res.send(await Daftar_surat.findAll({order: [["id", "ASC"]]}));
     } else {
       const prodi = await Prodi.findOne({
         where: { id: user.prodi_id },
@@ -63,6 +46,99 @@ app
       );
     }
   })
+
+  // .get("/detail/persetujuan", async (req, res) => {
+  //   try {
+  //     const { daftar_surat_id, persetujuan } = req.body;
+  //     const user = await Users.findOne({
+  //       where: { id: req.user.id },
+  //     });
+  //     const role = await Role_user.findOne({
+  //       where: { id: user.role_id },
+  //     });
+      
+  //     const isRead = persetujuan !== 'setuju'; // Set isRead to false when persetujuan is 'disetujui'
+  //     console.log('isRead:', isRead);
+  //     const statusArray = getStatus(role.id, isRead, persetujuan); // Pass isRead and persetujuan to getStatus
+  //     console.log('statusArray:', statusArray);
+  //     // isRead && statusArray.push('dibaca'); // Push 'dibaca' to statusArray when isRead is true
+  //     const status = statusArray.join(', ');
+
+  //     const surat = await Daftar_surat.findOne({
+  //       where: { id: daftar_surat_id },
+  //     });
+
+  //     if (!surat) {
+  //       return res.status(StatusCodes.NOT_FOUND).json({
+  //         error: "Daftar surat not found",
+  //       });
+  //     }
+
+  //     if (surat.persetujuan !== persetujuan) {
+  //       const [affectedRowsCount, affectedRows] = await Daftar_surat.update(
+  //         // console.log('isRead:', isRead),
+  //         {
+  //           dibaca: persetujuan === 'setuju' ? isRead : true, 
+  //           persetujuan,
+  //           status,
+  //         },
+  //         {
+  //           where: { id: daftar_surat_id },
+  //           returning: true,
+  //         }
+  //       );
+
+  //       surat = affectedRows[0];
+  //     }
+
+  //     res.status(StatusCodes.OK).json({ surat: surat });
+  //   } catch (error) {
+  //     console.error("Error:", error);
+  //     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+  //       error: "Internal Server Error",
+  //     });
+  //   }
+  // })
+
+  .put('/persetujuan', async (req, res) => {
+    try {
+      const { status, persetujuan } = req.body;
+      const { id } = req.query;
+      const user = await Users.findOne({
+        where: { id: req.user.id },
+      });
+      const role = await Role_user.findOne({
+        where: { id: user.role_id },
+      });
+
+      const surat = await Daftar_surat.findOne({
+        where: { id: id },
+      });
+
+      if (!surat) {
+        return res.status(StatusCodes.NOT_FOUND).json({
+          error: "Daftar surat not found",
+        });
+      }
+
+      const surat_per = await Daftar_surat.update(
+        {
+          status: status,
+          persetujuan: persetujuan,
+        },
+        {
+          where: { id: id },
+          returning: true, 
+        }
+      );
+
+      res.status(StatusCodes.OK).json({ surat: surat_per });
+    } catch (error) {
+      console.error("Error:", error);
+      res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+        error: "Internal Server Error",
+      });
+    }
 
   .put("/status", async (req, res) => {
     const { id } = req.query;
