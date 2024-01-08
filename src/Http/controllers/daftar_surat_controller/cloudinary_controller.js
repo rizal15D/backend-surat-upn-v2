@@ -99,7 +99,7 @@ app
           error: "Daftar surat not found",
         });
       }
-      
+
       if (!surat.dibaca) {
         const [affectedRowsCount, affectedRows] = await Daftar_surat.update(
           {
@@ -196,7 +196,8 @@ app
             .end(req.files.thumbnail[0].buffer);
         });
 
-        const status = getStatus(role.id);
+        const status = getStatus(role.id, false, null);
+        const statusString = status.join(', '); // Convert array to string
         const daftar_surat = await Daftar_surat.create({
           pin: 0,
           dibaca: 0,
@@ -205,7 +206,7 @@ app
           jenis,
           user_id: req.user.id,
           tanggal: Date(),
-          status: status,
+          status: statusString,
           lokasi_surat: suratUrl,
           persetujuan: "",
           komentar_id: null,
