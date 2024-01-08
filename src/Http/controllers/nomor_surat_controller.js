@@ -34,7 +34,7 @@ app.post("/", async (req, res) => {
     });
 
     const user = await Users.findOne({
-      where: { id: user_id },
+      where: { id: surat.user_id },
     });
 
     if (!user) {
