@@ -62,7 +62,7 @@ app.get("/", isAdmin, async (req, res) => {
 //   }
 // });
 
-app.put("/", async (req, res) => {
+app.put("/password", async (req, res) => {
   try {
     const { password } = req.body;
 

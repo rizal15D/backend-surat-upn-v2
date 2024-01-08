@@ -9,6 +9,7 @@ const {
 } = require("../../models");
 const auth = require("../middleware/authMiddleware");
 const cloudinaryController = require("../controllers/daftar_surat_controller/cloudinary_controller");
+const getStatus = require("./daftar_surat_controller/status_controller");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -49,6 +50,32 @@ app
         })
       );
     }
+  })
+
+  .put("/status", async (req, res) => {
+    const { id } = req.query;
+    const { status, persetujuan } = req.body;
+    let setStatus;
+    const surat = Daftar_surat.findOne({
+      where: { id },
+    });
+
+    const user = await Users.findOne({
+      where: { id: req.user.id },
+    });
+    const role = await Role_user.findOne({
+      where: { id: user.role_id },
+    });
+
+    if (persetujuan) {
+      setStatus = getStatus(role.id, status, persetujuan);
+    } else {
+      setStatus = getStatus(role.id, status);
+    }
+
+    surat.status = setStatus;
+
+    await surat.save();
   })
 
   .use(cloudinaryController);

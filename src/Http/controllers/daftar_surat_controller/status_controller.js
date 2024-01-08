@@ -29,14 +29,14 @@ function getStatus(role_user, isRead, persetujuan) {
   if (role_user == 3) {
     return "didaftar tunggu tu";
   }
-  if (role_user == 2 && !isRead) {
-    return "didaftar tunggu tu";
-  } else if (role_user == 2 && isRead) {
+  if (role_user == 2 && isRead) {
     return "dibaca tu";
-  } else if (role_user == 2 && isRead && persetujuan) {
-    return "disetujui tu";
-  } else if (role_user == 2 && isRead && !persetujuan) {
-    return "ditolak tu";
+  } else {
+    if (persetujuan) {
+      return "disetujui tu";
+    } else {
+      return "tidak disetujui";
+    }
   }
   if (role_user == 4 && !isRead) {
     return "didaftar tunggu dekan";
