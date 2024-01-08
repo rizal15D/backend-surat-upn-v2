@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 app
-  .get("/getAll", async function (req, res) {
+  .get("/", async function (req, res) {
     const user = await Users.findOne({
       where: { id: req.user.id },
       order: [["id", "ASC"]]
