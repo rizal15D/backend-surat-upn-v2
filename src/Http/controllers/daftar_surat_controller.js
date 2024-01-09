@@ -22,16 +22,17 @@ app
       where: { id: req.user.id },
     });
     const role = await Role_user.findOne({
-      where: { id: user.role_id }, //aman
+      where: { id: user.role_id }, //aman/ gaopo// ojok lek ngono/ monggo
     });
     //selain prodi
     if (role.id !== 3) {
       if (role.id === 4) {
         return res.send(
+          //sek tak cobak e lek di setujui iso kefilter opo ogak
           await Daftar_surat.findAll({
             where: {
               status: {
-                [Op.or]: ["disetujui TU", "disetujui dekan"],
+                [Op.or]: ["disetujui TU", "disetujui dekan", "ditolak dekan"],
               },
             },
             include: [
