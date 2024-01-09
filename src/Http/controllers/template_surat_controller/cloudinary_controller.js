@@ -92,13 +92,17 @@ app
             .status(StatusCodes.BAD_REQUEST)
             .json({ error: "Missing files in request" });
         }
-        const { jenis, deskripsi } = req.body;
-        const judul = req.files["surat"][0].originalname;
-        const judulCheck = await Template_surat.findOne({ where: { judul } });
+        const { judul, jenis, deskripsi } = req.body;
+        const judulEx =
+          judul + path.extname(req.files["surat"][0].originalname);
+        // const judul = req.files["surat"][0].originalname;
+        // const judulCheck = await Template_surat.findOne({
+        //   where: { judul_file },
+        // });
 
-        if (judulCheck) {
-          return res.json("judul/file sudah ada");
-        }
+        // if (judulCheck) {
+        //   return res.json("judul/file sudah ada");
+        // }
 
         let suratUrl;
         let thumbnailUrl;
@@ -145,14 +149,14 @@ app
         }
 
         const template_surat = await Template_surat.create({
-          judul,
+          judul: judulEx,
           lokasi: suratUrl,
           jenis: jenis || "",
           deskripsi: deskripsi || "",
           thumbnail: thumbnailUrl || "",
         });
 
-        res
+        return res
           .status(StatusCodes.CREATED)
           .json({ message: "File successfully uploaded", template_surat });
       } catch (error) {
@@ -173,20 +177,22 @@ app
     isAdmin,
     async function (req, res, next) {
       try {
-        const { jenis, deskripsi } = req.body;
+        const { judul, jenis, deskripsi } = req.body;
         const { id } = req.query;
         // const judul = req.files["surat"][0].originalname;
+        const judulEx =
+          judul + path.extname(req.files["surat"][0].originalname);
         // const judulCheck = await Template_surat.findOne({ where: { judul } });
 
         // if (judulCheck) {
         //   return res.json("judul/file sudah ada");
         // }
-        let judul;
+        // let judul;
         let suratUrl;
         let thumbnailUrl;
 
         if (req.files["surat"]) {
-          judul = req.files["surat"][0].originalname;
+          // judul = req.files["surat"][0].originalname;
           await new Promise((resolve, reject) => {
             cloudinary.uploader
               .upload_stream(
@@ -239,7 +245,7 @@ app
         }
         const template_surat = await Template_surat.update(
           {
-            judul: judul || data_template_surat.judul,
+            judul: judulEx,
             lokasi: suratUrl || data_template_surat.lokasi,
             jenis: jenis || "",
             deskripsi: deskripsi || "",
@@ -251,7 +257,7 @@ app
           }
         );
 
-        res
+        return res
           .status(StatusCodes.CREATED)
           .json({ message: "File successfully uploaded", template_surat });
       } catch (error) {

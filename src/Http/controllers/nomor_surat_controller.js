@@ -28,33 +28,37 @@ app.post("/", async (req, res) => {
       nomor_surat = "1"; // Jika tidak ada nomor sebelumnya, dimulai dari 1
     }
 
-    const surat = Daftar_surat.findOne({
+    const user_dekan = Users.findOne({
+      where: { id: req.user.id },
+    });
+
+    const user_surat = Daftar_surat.findOne({
       where: { id: surat_id },
     });
 
     const user = await Users.findOne({
-      where: { id: surat.user_id },
+      where: { id: user_surat.user_id },
     });
 
-    if (!user) {
+    if (!user || !user_dekan) {
       return res
         .status(StatusCodes.NOT_FOUND)
         .json({ error: "User not found" });
     }
 
     const prodi = await Prodi.findOne({
-      where: { id: user.prodi_id },
+      where: { id: user_surat.prodi_id },
     });
 
     const fakultas = await Fakultas.findOne({
       where: { id: user.fakultas_id },
     });
 
-    const activePeriodes = await Periode.findAll({
-      where: { status: 1 },
+    const active_periodes = await Periode.findAll({
+      where: { status: true },
     });
 
-    if (activePeriodes.length !== 1) {
+    if (active_periodes.length() !== 1) {
       return res
         .status(StatusCodes.BAD_REQUEST)
         .json({ error: "Active period should be exactly 1" });
@@ -62,7 +66,7 @@ app.post("/", async (req, res) => {
 
     const kode_prodi = prodi.name;
     const kode_fakultas = fakultas.name;
-    const tahun_periode = activePeriodes[0].tahun;
+    const tahun_periode = active_periodes[0].tahun;
 
     nomor_surat = `${nomor_surat}/${kode_fakultas}/TU_${kode_prodi}/${tahun_periode}`;
 
