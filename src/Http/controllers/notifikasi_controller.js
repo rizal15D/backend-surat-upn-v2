@@ -9,8 +9,8 @@ app.post("/", async function (req, res) {
   try {
     const notifikasi = await Notifikasi.create({
       surat_id: surat_id,
-      role_id_dari: role_id_dari, // gak/ iki aku nyoba posman kok eror
-      role_id_ke: role_id_ke, //ga enek tutor gae notif cuy
+      role_id_dari: role_id_dari,
+      role_id_ke: role_id_ke,
     });
 
     res

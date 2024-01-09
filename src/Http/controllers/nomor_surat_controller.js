@@ -10,9 +10,9 @@ const {
 const { StatusCodes } = require("http-status-codes");
 const app = express.Router();
 
-app.post("/", async (req, res) => {
+const nomor_surat = async (req, res) => {
   try {
-    const { surat_id } = req.body;
+    // const { surat_id } = req.body;
 
     let nomor;
     let nomor_surat;
@@ -27,13 +27,6 @@ app.post("/", async (req, res) => {
       nomor_surat = "1"; // Jika tidak ada nomor sebelumnya, dimulai dari 1
       console.log("testing");
     }
-
-    // if (nomor && nomor.length > 0) {
-    //   // Menggunakan padStart untuk memastikan panjang nomor_surat selalu 10 karakter
-    //   nomor_surat = String(parseInt(nomor[0].nomor_surat, 10) + 1);
-    // } else {
-    //   nomor_surat = "1"; // Jika tidak ada nomor sebelumnya, dimulai dari 1
-    // }
 
     const user_dekan = await Users.findOne({
       where: { id: req.user.id }, //token
@@ -114,6 +107,6 @@ app.post("/", async (req, res) => {
       .status(StatusCodes.INTERNAL_SERVER_ERROR)
       .json({ error: "Internal Server Error" });
   }
-});
+};
 
-module.exports = app;
+module.exports = { nomor_surat };

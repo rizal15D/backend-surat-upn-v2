@@ -10,8 +10,20 @@ app
     res.send(
       await Prodi.findAll({
         where: {
+          include: [
+            {
+              model: Fakultas,
+              as: "fakultas",
+              attributes: {
+                exclude: ["jenjang", "kode_fakultas", "createdAt", "updatedAt"],
+              },
+            },
+          ],
+          attributes: {
+            exclude: ["fakultas_id", "createdAt", "updatedAt"],
+          },
           id: {
-            [Op.ne]: 1, // Menghindari data dengan id 1
+            [Op.ne]: 1,
           },
         },
         order: [["id", "ASC"]],

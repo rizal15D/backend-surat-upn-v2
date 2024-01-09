@@ -1,8 +1,16 @@
 const express = require("express");
 const app = express.Router();
-const { Daftar_surat, Users, Role_user, Prodi } = require("../../models");
+const {
+  Daftar_surat,
+  Users,
+  Role_user,
+  Prodi,
+  Fakultas,
+} = require("../../models");
 const auth = require("../middleware/authMiddleware");
 const cloudinaryController = require("../controllers/daftar_surat_controller/cloudinary_controller");
+const repoController = require("../controllers/repo_controller");
+const nomorController = require("../controllers/nomor_surat_controller");
 const { StatusCodes } = require("http-status-codes");
 const getStatus = require("./daftar_surat_controller/status_controller");
 const { Op } = require("sequelize");
@@ -32,7 +40,48 @@ app
           })
         );
       }
-      res.send(await Daftar_surat.findAll({ order: [["id", "ASC"]] }));
+      res.send(
+        await Daftar_surat.findAll({
+          model: Users,
+          as: "user",
+          attributes: {
+            exclude: [
+              "password",
+              "role_id",
+              "prodi_id",
+              "fakultas_id",
+              "createdAt",
+              "updatedAt",
+            ],
+          },
+          include: [
+            {
+              model: Prodi,
+              as: "prodi",
+              attributes: {
+                exclude: [
+                  "kode_prodi",
+                  "fakultas_id",
+                  "createdAt",
+                  "updatedAt",
+                ],
+              },
+            },
+            {
+              model: Role_user,
+              as: "role",
+              attributes: { exclude: ["createdAt", "updatedAt"] },
+            },
+            {
+              model: Fakultas,
+              as: "fakultas",
+              attributes: {
+                exclude: ["jenjang", "kode_fakultas", "createdAt", "updatedAt"],
+              },
+            },
+          ],
+        })
+      );
     } else {
       const prodi = await Prodi.findOne({
         where: { id: user.prodi_id },
@@ -143,6 +192,12 @@ app
           returning: true,
         }
       );
+      if (surat.status == getStatus(4, true, "setuju")) {
+        // app.post(nomorController.nomor_surat);
+        // app.post(repoController.repo);
+        await nomorController.nomor_surat;
+        await repoController.repo;
+      }
 
       res.status(StatusCodes.OK).json({ surat: surat_per });
     } catch (error) {

@@ -12,6 +12,7 @@ const komentarController = require("../Http/controllers/komentar_controller");
 const fakultasController = require("../Http/controllers/fakultas_controller");
 const periodeController = require("../Http/controllers/periode_controller");
 const nomorController = require("../Http/controllers/nomor_surat_controller");
+const repoController = require("../Http/controllers/repo_controller");
 
 const router = express.Router();
 
@@ -30,6 +31,7 @@ router.use("/fakultas", authMiddleware, fakultasController);
 router.use("/template-surat", authMiddleware, templateController);
 router.use("/notifikasi", authMiddleware, notifikasiController);
 router.use("/komentar", authMiddleware, komentarController);
-router.use("/nomor-surat", authMiddleware, nomorController);
+// router.use("/nomor-surat", authMiddleware, nomorController);
+// router.use("/repo", authMiddleware, repoController);
 
 module.exports = router;
