@@ -54,6 +54,11 @@ module.exports = {
     // host: process.env.DB_HOST,
     dialect: process.env.DB_DIALECT,
     secret_key: process.env.SECRET_KEY,
-    // dialectOpt
+    dialectOptions: {
+      ssl: {
+        require: true,
+        rejectUnauthorized: false,
+      },
+    },
   },
 };
