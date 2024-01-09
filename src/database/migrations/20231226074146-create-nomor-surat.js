@@ -10,7 +10,7 @@ module.exports = {
         type: Sequelize.INTEGER,
       },
       nomor_surat: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.STRING,
       },
       surat_id: {
         type: Sequelize.INTEGER,
