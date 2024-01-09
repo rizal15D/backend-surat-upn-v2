@@ -88,7 +88,7 @@ app
       });
 
       const statusArray = getStatus(role.id, true);
-      const status = statusArray.join(', ');
+      const status = statusArray.join(", ");
 
       const surat = await Daftar_surat.findOne({
         where: { id: daftar_surat_id },
@@ -115,7 +115,7 @@ app
         surat = affectedRows[0];
       }
 
-      res.status(StatusCodes.OK).json({ surat: surat});
+      res.status(StatusCodes.OK).json({ surat: surat });
     } catch (error) {
       console.error("Error:", error);
       res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
@@ -203,12 +203,12 @@ app
         }
 
         const status = getStatus(role.id, false, null);
-        const statusString = status.join(', '); // Convert array to string
+        const statusString = status.join(", "); // Convert array to string
         const daftar_surat = await Daftar_surat.create({
           pin: 0,
           dibaca: 0,
           judul: judulExt,
-          thumbnail: thumbnailUrl,
+          thumbnail: thumbnailUrl || "",
           jenis,
           user_id: req.user.id,
           tanggal: Date(),
