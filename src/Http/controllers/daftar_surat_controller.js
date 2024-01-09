@@ -1,6 +1,12 @@
 const express = require("express");
 const app = express.Router();
-const { Daftar_surat, Users, Role_user, Prodi } = require("../../models");
+const {
+  Daftar_surat,
+  Users,
+  Role_user,
+  Prodi,
+  Fakultas,
+} = require("../../models");
 const auth = require("../middleware/authMiddleware");
 const cloudinaryController = require("../controllers/daftar_surat_controller/cloudinary_controller");
 const { StatusCodes } = require("http-status-codes");
@@ -16,7 +22,7 @@ app
       where: { id: req.user.id },
     });
     const role = await Role_user.findOne({
-      where: { id: user.role_id },
+      where: { id: user.role_id }, //aman
     });
     //selain prodi
     if (role.id !== 3) {
@@ -28,11 +34,109 @@ app
                 [Op.or]: ["disetujui TU", "disetujui dekan"],
               },
             },
+            include: [
+              {
+                model: Users,
+                as: "user",
+                attributes: {
+                  exclude: [
+                    "password",
+                    "role_id",
+                    "prodi_id",
+                    "fakultas_id",
+                    "createdAt",
+                    "updatedAt",
+                  ],
+                },
+                include: [
+                  {
+                    model: Prodi,
+                    as: "prodi",
+                    attributes: {
+                      exclude: [
+                        "kode_prodi",
+                        "fakultas_id",
+                        "createdAt",
+                        "updatedAt",
+                      ],
+                    },
+                  },
+                  {
+                    model: Role_user,
+                    as: "role",
+                    attributes: { exclude: ["createdAt", "updatedAt"] },
+                  },
+                  {
+                    model: Fakultas,
+                    as: "fakultas",
+                    attributes: {
+                      exclude: [
+                        "jenjang",
+                        "kode_fakultas",
+                        "createdAt",
+                        "updatedAt",
+                      ],
+                    },
+                  },
+                ],
+              },
+            ],
             order: [["id", "ASC"]],
           })
         );
       }
-      res.send(await Daftar_surat.findAll({ order: [["id", "ASC"]] }));
+      res.send(
+        await Daftar_surat.findAll({
+          include: [
+            {
+              model: Users,
+              as: "user",
+              attributes: {
+                exclude: [
+                  "password",
+                  "role_id",
+                  "prodi_id",
+                  "fakultas_id",
+                  "createdAt",
+                  "updatedAt",
+                ],
+              },
+              include: [
+                {
+                  model: Prodi,
+                  as: "prodi",
+                  attributes: {
+                    exclude: [
+                      "kode_prodi",
+                      "fakultas_id",
+                      "createdAt",
+                      "updatedAt",
+                    ],
+                  },
+                },
+                {
+                  model: Role_user,
+                  as: "role",
+                  attributes: { exclude: ["createdAt", "updatedAt"] },
+                },
+                {
+                  model: Fakultas,
+                  as: "fakultas",
+                  attributes: {
+                    exclude: [
+                      "jenjang",
+                      "kode_fakultas",
+                      "createdAt",
+                      "updatedAt",
+                    ],
+                  },
+                },
+              ],
+            },
+          ],
+          order: [["id", "ASC"]],
+        })
+      );
     } else {
       const prodi = await Prodi.findOne({
         where: { id: user.prodi_id },
@@ -43,13 +147,54 @@ app
             {
               model: Users,
               as: "user",
-              attributes: ["*"],
+              // attributes: ["*"],
+              attributes: {
+                exclude: [
+                  "password",
+                  "role_id",
+                  "prodi_id",
+                  "fakultas_id",
+                  "createdAt",
+                  "updatedAt",
+                ],
+              },
               where: { prodi_id: prodi.id },
+              // include: [
+              //   {
+              //     model: Prodi,
+              //     as: "prodi",
+              //     attributes: ["name"],
+              //   },
+              // ],
               include: [
                 {
                   model: Prodi,
                   as: "prodi",
-                  attributes: ["name"],
+                  attributes: {
+                    exclude: [
+                      "kode_prodi",
+                      "fakultas_id",
+                      "createdAt",
+                      "updatedAt",
+                    ],
+                  },
+                },
+                {
+                  model: Role_user,
+                  as: "role",
+                  attributes: { exclude: ["createdAt", "updatedAt"] },
+                },
+                {
+                  model: Fakultas,
+                  as: "fakultas",
+                  attributes: {
+                    exclude: [
+                      "jenjang",
+                      "kode_fakultas",
+                      "createdAt",
+                      "updatedAt",
+                    ],
+                  },
                 },
               ],
             },
