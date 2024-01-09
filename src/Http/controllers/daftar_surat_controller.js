@@ -5,6 +5,7 @@ const auth = require("../middleware/authMiddleware");
 const cloudinaryController = require("../controllers/daftar_surat_controller/cloudinary_controller");
 const { StatusCodes } = require("http-status-codes");
 const getStatus = require("./daftar_surat_controller/status_controller");
+const { Op } = require("sequelize");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
@@ -17,10 +18,21 @@ app
     const role = await Role_user.findOne({
       where: { id: user.role_id },
     });
-
+    //selain prodi
     if (role.id !== 3) {
-      //selain prodi
-      res.send(await Daftar_surat.findAll({order: [["id", "ASC"]]}));
+      if (role.id === 4) {
+        return res.send(
+          await Daftar_surat.findAll({
+            where: {
+              status: {
+                [Op.or]: ["disetujui TU", "disetujui dekan"],
+              },
+            },
+            order: [["id", "ASC"]],
+          })
+        );
+      }
+      res.send(await Daftar_surat.findAll({ order: [["id", "ASC"]] }));
     } else {
       const prodi = await Prodi.findOne({
         where: { id: user.prodi_id },
@@ -56,7 +68,7 @@ app
   //     const role = await Role_user.findOne({
   //       where: { id: user.role_id },
   //     });
-      
+
   //     const isRead = persetujuan !== 'setuju'; // Set isRead to false when persetujuan is 'disetujui'
   //     console.log('isRead:', isRead);
   //     const statusArray = getStatus(role.id, isRead, persetujuan); // Pass isRead and persetujuan to getStatus
@@ -78,7 +90,7 @@ app
   //       const [affectedRowsCount, affectedRows] = await Daftar_surat.update(
   //         // console.log('isRead:', isRead),
   //         {
-  //           dibaca: persetujuan === 'setuju' ? isRead : true, 
+  //           dibaca: persetujuan === 'setuju' ? isRead : true,
   //           persetujuan,
   //           status,
   //         },
@@ -100,7 +112,7 @@ app
   //   }
   // })
 
-  .put('/persetujuan', async (req, res) => {
+  .put("/persetujuan", async (req, res) => {
     try {
       const { status, persetujuan } = req.body;
       const { id } = req.query;
@@ -128,7 +140,7 @@ app
         },
         {
           where: { id: id },
-          returning: true, 
+          returning: true,
         }
       );
 
@@ -139,6 +151,7 @@ app
         error: "Internal Server Error",
       });
     }
+  })
 
   .put("/status", async (req, res) => {
     const { id } = req.query;

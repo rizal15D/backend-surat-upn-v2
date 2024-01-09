@@ -7,7 +7,11 @@ module.exports = (sequelize, DataTypes) => {
         foreignKey: "user_id",
         as: "user",
       });
-      Daftar_surat.belongsTo(models.Komentar, { foreignKey: "komentar_id" });
+      Daftar_surat.belongsTo(models.Komentar, {
+        foreignKey: "komentar_id",
+        as: "komentar",
+      });
+
       Daftar_surat.hasMany(models.Notifikasi, { foreignKey: "surat_id" });
       Daftar_surat.hasMany(models.Nomor_surat, { foreignKey: "surat_id" });
     }
