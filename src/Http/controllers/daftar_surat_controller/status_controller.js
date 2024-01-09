@@ -5,7 +5,6 @@ const {
   Users,
 } = require("../../../models");
 
-
 // function getStatus(role_user) {
 //   console.log(role_user);
 //   if (role_user == 2) {
@@ -35,18 +34,18 @@ function getStatus(role_user, isRead, persetujuan) {
   const statusMap = {
     3: ["didaftar tunggu tu"],
     2: !isRead ? ["didaftar tunggu tu"] : ["dibaca tu"],
-    4: !isRead ? ["didaftar tunggu dekan"] : ["dibaca dekan"]
+    4: !isRead ? ["didaftar tunggu dekan"] : ["dibaca dekan"],
   };
 
   const updatedStatusMap = { ...statusMap }; // Create a copy of statusMap
 
   if (persetujuan) {
-    if (persetujuan.includes('setuju')) {
-      updatedStatusMap[2] = ["disetujui tu"];
-      updatedStatusMap[4] = ["disetujui dekan"];
-    } else if (persetujuan.includes('tolak')) {
-      updatedStatusMap[2] = ["ditolak tu"];
-      updatedStatusMap[4] = ["ditolak dekan"];
+    if (persetujuan.includes("setuju")) {
+      updatedStatusMap[2] = ["disetujui TU"];
+      updatedStatusMap[4] = ["disetujui Dekan"];
+    } else if (persetujuan.includes("tolak")) {
+      updatedStatusMap[2] = ["ditolak TU"];
+      updatedStatusMap[4] = ["ditolak Dekan"];
     }
   }
 

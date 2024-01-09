@@ -22,17 +22,18 @@ app
       where: { id: req.user.id },
     });
     const role = await Role_user.findOne({
-      where: { id: user.role_id }, //aman/ gaopo// ojok lek ngono/ monggo
+      // cobak en mad input persetujuan e tok// role id kok an
+      // auto?/ piye/ sek ganti config/eror/ put kan?
+      where: { id: user.role_id }, //
     });
     //selain prodi
     if (role.id !== 3) {
       if (role.id === 4) {
         return res.send(
-          //sek tak cobak e lek di setujui iso kefilter opo ogak
           await Daftar_surat.findAll({
             where: {
               status: {
-                [Op.or]: ["disetujui TU", "disetujui dekan", "ditolak dekan"],
+                [Op.or]: ["disetujui TU", "disetujui Dekan", "ditolak Dekan"],
               },
             },
             include: [
@@ -41,6 +42,7 @@ app
                 as: "user",
                 attributes: {
                   exclude: [
+                    "id",
                     "password",
                     "role_id",
                     "prodi_id",
@@ -228,8 +230,8 @@ app
 
       const surat_per = await Daftar_surat.update(
         {
-          status: status,
-          persetujuan: persetujuan,
+          persetujuan,
+          status,
         },
         {
           where: { id: id },
