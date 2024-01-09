@@ -138,11 +138,11 @@ app
         // const judulCheck = await Daftar_surat.findOne({
         //   where: { judul: judulExt },
         // });
-        const jenisExists = await Template_surat.findOne({ where: { jenis } });
+        // const jenisExists = await Template_surat.findOne({ where: { jenis } });
 
-        if (!jenisExists) {
-          return res.status(400).json({ error: "Jenis tidak ditemukan" });
-        }
+        // if (!jenisExists) {
+        //   return res.status(400).json({ error: "Jenis tidak ditemukan" });
+        // }
         const user = await Users.findOne({
           where: { id: req.user.id },
         });
@@ -209,7 +209,7 @@ app
           dibaca: 0,
           judul: judulExt,
           thumbnail: thumbnailUrl || "",
-          jenis,
+          jenis: jenis || "",
           user_id: req.user.id,
           tanggal: Date(),
           status: statusString,

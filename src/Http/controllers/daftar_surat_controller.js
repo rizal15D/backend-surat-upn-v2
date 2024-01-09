@@ -59,59 +59,6 @@ app
     }
   })
 
-  // .get("/detail/persetujuan", async (req, res) => {
-  //   try {
-  //     const { daftar_surat_id, persetujuan } = req.body;
-  //     const user = await Users.findOne({
-  //       where: { id: req.user.id },
-  //     });
-  //     const role = await Role_user.findOne({
-  //       where: { id: user.role_id },
-  //     });
-
-  //     const isRead = persetujuan !== 'setuju'; // Set isRead to false when persetujuan is 'disetujui'
-  //     console.log('isRead:', isRead);
-  //     const statusArray = getStatus(role.id, isRead, persetujuan); // Pass isRead and persetujuan to getStatus
-  //     console.log('statusArray:', statusArray);
-  //     // isRead && statusArray.push('dibaca'); // Push 'dibaca' to statusArray when isRead is true
-  //     const status = statusArray.join(', ');
-
-  //     const surat = await Daftar_surat.findOne({
-  //       where: { id: daftar_surat_id },
-  //     });
-
-  //     if (!surat) {
-  //       return res.status(StatusCodes.NOT_FOUND).json({
-  //         error: "Daftar surat not found",
-  //       });
-  //     }
-
-  //     if (surat.persetujuan !== persetujuan) {
-  //       const [affectedRowsCount, affectedRows] = await Daftar_surat.update(
-  //         // console.log('isRead:', isRead),
-  //         {
-  //           dibaca: persetujuan === 'setuju' ? isRead : true,
-  //           persetujuan,
-  //           status,
-  //         },
-  //         {
-  //           where: { id: daftar_surat_id },
-  //           returning: true,
-  //         }
-  //       );
-
-  //       surat = affectedRows[0];
-  //     }
-
-  //     res.status(StatusCodes.OK).json({ surat: surat });
-  //   } catch (error) {
-  //     console.error("Error:", error);
-  //     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
-  //       error: "Internal Server Error",
-  //     });
-  //   }
-  // })
-
   .put("/persetujuan", async (req, res) => {
     try {
       const { status, persetujuan } = req.body;
@@ -180,5 +127,58 @@ app
   })
 
   .use(cloudinaryController);
+
+// .get("/detail/persetujuan", async (req, res) => {
+//   try {
+//     const { daftar_surat_id, persetujuan } = req.body;
+//     const user = await Users.findOne({
+//       where: { id: req.user.id },
+//     });
+//     const role = await Role_user.findOne({
+//       where: { id: user.role_id },
+//     });
+
+//     const isRead = persetujuan !== 'setuju'; // Set isRead to false when persetujuan is 'disetujui'
+//     console.log('isRead:', isRead);
+//     const statusArray = getStatus(role.id, isRead, persetujuan); // Pass isRead and persetujuan to getStatus
+//     console.log('statusArray:', statusArray);
+//     // isRead && statusArray.push('dibaca'); // Push 'dibaca' to statusArray when isRead is true
+//     const status = statusArray.join(', ');
+
+//     const surat = await Daftar_surat.findOne({
+//       where: { id: daftar_surat_id },
+//     });
+
+//     if (!surat) {
+//       return res.status(StatusCodes.NOT_FOUND).json({
+//         error: "Daftar surat not found",
+//       });
+//     }
+
+//     if (surat.persetujuan !== persetujuan) {
+//       const [affectedRowsCount, affectedRows] = await Daftar_surat.update(
+//         // console.log('isRead:', isRead),
+//         {
+//           dibaca: persetujuan === 'setuju' ? isRead : true,
+//           persetujuan,
+//           status,
+//         },
+//         {
+//           where: { id: daftar_surat_id },
+//           returning: true,
+//         }
+//       );
+
+//       surat = affectedRows[0];
+//     }
+
+//     res.status(StatusCodes.OK).json({ surat: surat });
+//   } catch (error) {
+//     console.error("Error:", error);
+//     res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({
+//       error: "Internal Server Error",
+//     });
+//   }
+// })
 
 module.exports = app;
