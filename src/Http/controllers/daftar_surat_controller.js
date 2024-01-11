@@ -22,9 +22,7 @@ app
       where: { id: req.user.id },
     });
     const role = await Role_user.findOne({
-      // cobak en mad input persetujuan e tok// role id kok an
-      // auto?/ piye/ sek ganti config/eror/ put kan?
-      where: { id: user.role_id }, //
+      where: { id: user.role_id },
     });
     //selain prodi
     if (role.id !== 3) {

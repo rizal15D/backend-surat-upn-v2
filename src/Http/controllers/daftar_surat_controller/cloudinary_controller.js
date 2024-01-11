@@ -40,42 +40,46 @@ function getResourceType(filename) {
 }
 
 app
-  //   .get("/download/cloudinary", async function (req, res) {
-  //     const { id } = req.query;
-  //     if (!id) {
-  //       return res.status(400).json({ error: "Invalid params" });
-  //     }
+  .get("/download/cloudinary", async function (req, res) {
+    const { id } = req.query;
+    if (!id) {
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ error: "Invalid params" });
+    }
 
-  //     const template_surat = await Template_surat.findOne({ where: { id: id } });
+    const daftar_surat = await Daftar_surat.findOne({ where: { id: id } });
 
-  //     if (!template_surat) {
-  //       return res.status(404).json({ error: "Template Surat not found" });
-  //     }
+    if (!daftar_surat) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ error: "Daftar Surat not found" });
+    }
 
-  //     // const fileName = "newFileName.pdf"; // Ganti dengan nama file yang diinginkan
-  //     const fileName = template_surat.judul;
-  //     const downloadUrl = `${
-  //       template_surat.lokasi
-  //     }?attachment=${encodeURIComponent(fileName)}`;
+    // const fileName = "newFileName.pdf"; // Ganti dengan nama file yang diinginkan/
+    const fileName = daftar_surat.judul;
+    const downloadUrl = `${
+      daftar_surat.lokasi_surat
+    }?attachment=${encodeURIComponent(fileName)}`;
 
-  //     // Download file dari Cloudinary
-  //     const response = await fetch(downloadUrl);
-  //     const fileBuffer = await response.buffer();
+    // Download file dari Cloudinary
+    const response = await fetch(downloadUrl);
+    const fileBuffer = await response.buffer();
 
-  //     const tempDir = "/tmp/template_surat";
-  //     // Periksa apakah direktori sudah ada
-  //     if (!fs.existsSync(tempDir)) {
-  //       // Jika tidak, buat direktori
-  //       fs.mkdirSync(tempDir);
-  //     }
+    const tempDir = "/tmp/daftar_surat";
+    // Periksa apakah direktori sudah ada
+    if (!fs.existsSync(tempDir)) {
+      // Jika tidak, buat direktori
+      fs.mkdirSync(tempDir);
+    }
 
-  //     // Simpan file di server Anda
-  //     const filePath = "/tmp/template_surat/temp";
-  //     fs.writeFileSync(filePath, fileBuffer);
+    // Simpan file di server Anda//
+    const filePath = "/tmp/daftar_surat/temp";
+    fs.writeFileSync(filePath, fileBuffer);
 
-  //     // Kembalikan file kepada klien dengan nama yang diinginkan
-  //     res.download(filePath, fileName);
-  //   })
+    // Kembalikan file kepada klien dengan nama yang diinginkan
+    res.download(filePath, fileName);
+  })
 
   .get("/detail", async (req, res) => {
     try {
