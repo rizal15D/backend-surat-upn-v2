@@ -69,8 +69,8 @@ app
     // Simpan file di server Anda
     // require("../../../../template_surat")
     // const filePath = "../../../../template_surat";
-    const filePath = "/tmp/template_surat/temp";
-    // const filePath = path.join(tempDir, fileName);
+    // const filePath = "/tmp/template_surat/temp";
+    const filePath = path.join(tempDir, fileName);
     // fs.writeFileSync(filePath, fileBuffer);
     fs.writeFile(filePath, fileBuffer, (err) => {
       if (err) throw err;
@@ -78,6 +78,10 @@ app
     });
 
     // Kembalikan file kepada klien dengan nama yang diinginkan
+    res.setHeader(
+      "Content-Type",
+      "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    );
     res.download(filePath, fileName);
   })
 
