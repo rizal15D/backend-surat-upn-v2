@@ -65,9 +65,21 @@ app.get("/", isAdmin, async (req, res) => {
 
 app.put("/password", async (req, res) => {
   try {
-    const { password } = req.body;
+    const { oldPassword, newPassword } = req.body;
 
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const user = await Users.findOne({ where: { id: req.user.id } });
+
+    if (!user) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    const isMatch = await bcrypt.compare(oldPassword, user.password);
+
+    if (!isMatch) {
+      return res.status(400).json({ error: "Old password does not match" });
+    }
+
+    const hashedPassword = await bcrypt.hash(newPassword, 10);
     const [updated] = await Users.update(
       { password: hashedPassword },
       {
@@ -75,12 +87,10 @@ app.put("/password", async (req, res) => {
       }
     );
 
-    const user = await Users.findOne({ where: { id: req.user.id } });
-
     if (updated) {
       res.json({ message: `${user.email} Password updated successfully` });
     } else {
-      res.status(404).json({ error: "User not found" });
+      res.status(500).json({ error: "Failed to update password" });
     }
   } catch (error) {
     res.status(500).json({ error: error.message });

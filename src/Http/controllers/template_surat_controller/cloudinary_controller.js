@@ -61,9 +61,13 @@ app
 
     const tempDir = "/tmp/template_surat";
     // Periksa apakah direktori sudah ada
+    // if (!fs.existsSync(tempDir)) {
+    //   // Jika tidak, buat direktori
+    //   fs.mkdirSync(tempDir);
+    // }
     if (!fs.existsSync(tempDir)) {
       // Jika tidak, buat direktori
-      fs.mkdirSync(tempDir);
+      fs.promises.mkdirSync(tempDir, { recursive: true });
     }
 
     // Simpan file di server Anda

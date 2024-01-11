@@ -17,7 +17,7 @@ app.post("/", async (req, res) => {
     let nomor;
     let nomor_surat;
 
-    if (Nomor_surat.count() > 0) {
+    if ((await Nomor_surat.count()) > 0) {
       nomor = await Nomor_surat.findAll({
         limit: 1,
         order: [["id", "DESC"]],
