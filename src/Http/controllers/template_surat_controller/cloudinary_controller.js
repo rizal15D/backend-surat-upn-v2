@@ -70,7 +70,12 @@ app
     // require("../../../../template_surat")
     // const filePath = "../../../../template_surat";
     const filePath = "/tmp/template_surat/temp";
-    fs.writeFileSync(filePath, fileBuffer);
+    // const filePath = path.join(tempDir, fileName);
+    // fs.writeFileSync(filePath, fileBuffer);
+    fs.writeFile(filePath, fileBuffer, (err) => {
+      if (err) throw err;
+      console.log("File has been saved!");
+    });
 
     // Kembalikan file kepada klien dengan nama yang diinginkan
     res.download(filePath, fileName);
@@ -86,7 +91,7 @@ app
       { name: "surat", maxCount: 1 },
       { name: "thumbnail", maxCount: 1 },
     ]),
-    isAdmin,
+    // isAdmin,
     async function (req, res, next) {
       try {
         if (!req.files["surat"]) {

@@ -27,7 +27,7 @@ router.use("/daftar-surat", authMiddleware, daftarSuratController);
 router.use("/prodi", authMiddleware, prodiController);
 router.use("/role-user", authMiddleware, roleUserController);
 router.use("/fakultas", authMiddleware, fakultasController);
-router.use("/template-surat", authMiddleware, templateController);
+router.use("/template-surat", templateController);
 router.use("/notifikasi", authMiddleware, notifikasiController);
 router.use("/komentar", authMiddleware, komentarController);
 router.use("/nomor-surat", authMiddleware, nomorController);
