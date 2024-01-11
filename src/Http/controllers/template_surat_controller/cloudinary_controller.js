@@ -59,15 +59,17 @@ app
     const response = await fetch(downloadUrl);
     const fileBuffer = await response.buffer();
 
-    const tempDir = "/tmp/template_surat";
-    // Periksa apakah direktori sudah ada
-    if (!fs.existsSync(tempDir)) {
-      // Jika tidak, buat direktori
-      fs.mkdirSync(tempDir);
-    }
+    // const tempDir = "/tmp/template_surat";
+    // // Periksa apakah direktori sudah ada
+    // if (!fs.existsSync(tempDir)) {
+    //   // Jika tidak, buat direktori
+    //   fs.mkdirSync(tempDir);
+    // }
 
     // Simpan file di server Anda
-    const filePath = "/tmp/template_surat/temp";
+    // require("../../../../template_surat")
+    const filePath = "../../../../template_surat";
+    // const filePath = "/tmp/template_surat/temp";
     fs.writeFileSync(filePath, fileBuffer);
 
     // Kembalikan file kepada klien dengan nama yang diinginkan
