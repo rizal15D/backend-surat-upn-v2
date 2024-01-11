@@ -102,7 +102,9 @@ app.post("/", async (req, res) => {
     });
 
     if (saveNomorSurat) {
-      return res.status(StatusCodes.OK).json({ message: "Success" });
+      return res
+        .status(StatusCodes.OK)
+        .json({ message: "Success", saveNomorSurat });
     } else {
       return res
         .status(StatusCodes.INTERNAL_SERVER_ERROR)

@@ -33,8 +33,8 @@ module.exports = {
     // password: process.env.DB_PASSWORD,
     // database: process.env.DB_NAME,
     // host: process.env.DB_HOST,
-    // dialect: process.env.DB_DIALECT,
-    // secret_key: process.env.SECRET_KEY,
+    dialect: process.env.DB_DIALECT,
+    secret_key: process.env.SECRET_KEY,
     dialectOptions: {
       ssl: {
         require: true,
@@ -53,7 +53,7 @@ module.exports = {
     // database: process.env.DB_NAME,
     // host: process.env.DB_HOST,
     dialect: process.env.DB_DIALECT,
-    secret_key: process.enSECRET_KEY,
+    ret_key: process.enSECRKEY,
     dialectOptions: {
       ssl: {
         require: true,

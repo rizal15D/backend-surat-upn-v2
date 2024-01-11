@@ -84,7 +84,7 @@ app
       { name: "surat", maxCount: 1 },
       { name: "thumbnail", maxCount: 1 },
     ]),
-    isAdmin,
+    // isAdmin,
     async function (req, res, next) {
       try {
         if (!req.files["surat"]) {
