@@ -12,15 +12,8 @@ module.exports = {
       judul: {
         type: Sequelize.STRING,
       },
-      user_id: {
-        type: Sequelize.INTEGER,
-        allowNull: false,
-        references: {
-          model: "Users",
-          key: "id",
-        },
-        onUpdate: "CASCADE",
-        onDelete: "SET NULL",
+      data_user: {
+        type: Sequelize.STRING,
       },
       tanggal: {
         type: Sequelize.DATE,

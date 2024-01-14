@@ -206,6 +206,8 @@ app
           });
         }
 
+        const suratUrlHttps = suratUrl.replace(/^http:/, "https:");
+
         const status = getStatus(role.id, false, null);
         const statusString = status.join(", "); // Convert array to string
         const daftar_surat = await Daftar_surat.create({
@@ -217,7 +219,7 @@ app
           user_id: req.user.id,
           tanggal: Date(),
           status: statusString,
-          lokasi_surat: suratUrl,
+          lokasi_surat: suratUrlHttps,
           persetujuan: "",
           komentar_id: null,
         });

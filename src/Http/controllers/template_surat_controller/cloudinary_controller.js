@@ -163,9 +163,11 @@ app
           });
         }
 
+        const suratUrlHttps = suratUrl.replace(/^http:/, "https:");
+
         const template_surat = await Template_surat.create({
           judul: judulEx,
-          lokasi: suratUrl,
+          lokasi: suratUrlHttps,
           jenis: jenis || "",
           deskripsi: deskripsi || "",
           thumbnail: thumbnailUrl || "",
